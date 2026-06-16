@@ -258,4 +258,76 @@ class ServicerequestdetailController extends Controller
             ], 200);
         }
     }
+
+    public function result(string $id)
+    {
+        try {
+            $detail = Servicerequestdetail::with([
+                'service',
+                'execution.labResult.details.parameter',
+                'execution.clinicalResult.files'
+            ])->find($id);
+
+            if (!$detail) {
+                return response()->json([
+                    "status" => false,
+                    "data" => [],
+                    "message" => "Không tồn tại phiếu CLS này"
+                ], 404);
+            }
+
+            $result = null;
+
+            // CASE 1: LAB (xét nghiệm)
+            if ($detail->service->servicecategoryid == 2) {
+                $lab = $detail->execution->labResult ?? null;
+
+                if ($lab) {
+                    $result = [
+                        "type" => "LAB",
+                        "verified_time" => $lab->verifiedtime,
+                        "items" => $lab->details->map(function ($d) {
+                            return [
+                                "code" => $d->parameter->code,
+                                "name" => $d->parameter->name,
+                                "value" => $d->resultvalue,
+                                "unit" => $d->parameter->unit,
+                            ];
+                        })
+                    ];
+                }
+            }
+
+            // CASE 2: IMAGING / ECG / FUNCTIONAL
+            else {
+                $clinical = $detail->execution->clinicalResult ?? null;
+
+                if ($clinical) {
+                    $result = [
+                        "type" => "CLINICAL",
+                        "description" => $clinical->description,
+                        "conclusion" => $clinical->conclusion,
+                        "files" => $clinical->files->map(function ($f) {
+                            return [
+                                "url" => $f->fileurl,
+                                "type" => $f->filetype
+                            ];
+                        })
+                    ];
+                }
+            }
+
+            return response()->json([
+                "status" => true,
+                "data" => $result,
+                "message" => "Lấy kết quả thành công"
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                "status" => false,
+                "data" => [],
+                "message" => $e->getMessage()
+            ], 500);
+        }
+    }
 }

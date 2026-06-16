@@ -49,23 +49,18 @@ export default function Login() {
     const [isTK, setIsTK] = useState(true);
     const sleep = (ms: any) => new Promise(resolve => setTimeout(resolve, ms));
 
-    // useEffect(() => {
-    //     if (isLoggedIn || isLoginSuccess) {
-    //         router.replace("/patient");
-    //     }
-    // }, [isLoggedIn, isLoginSuccess])
 
     const [backendIp, setBackendIp] = useState<string>("");
 
-    // useEffect(() => {
-    //     const setIP = async () => {
-    //         const BackendIp = await AsyncStorage.getItem("BackendIp");
-    //         if (BackendIp != null) {
-    //             setBackendIp(BackendIp)
-    //         }
-    //     };
-    //     setIP();
-    // }, []);
+    useEffect(() => {
+        const setIP = async () => {
+            const BackendIp = await AsyncStorage.getItem("BackendIp");
+            if (BackendIp != null) {
+                setBackendIp(BackendIp)
+            }
+        };
+        setIP();
+    }, []);
     async function saveIP(ip: string) {
         await AsyncStorage.setItem("BackendIp", ip);
     }
