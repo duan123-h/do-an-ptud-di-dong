@@ -1,0 +1,118 @@
+import { useState } from "react";
+import toast from 'react-hot-toast';
+import { useLocation, useNavigate } from "react-router-dom";
+import AuthService from "../../../services/auth/AuthService";
+import { Toaster } from 'react-hot-toast';
+export default function HisLogin() {
+    const location = useLocation();
+    const navigate = useNavigate();
+    const [loadingpost,setLoadingpost]=useState(false);
+    const [doctorData,setDoctorData]=useState({});
+    function handleChangeInput(e){
+        const name=e.target.name;
+        const value=e.target.value;
+        setDoctorData((input)=>({
+            ...input,
+            [name]:value
+        }));
+    }
+    const from = location.state?.from?.pathname || "/His";
+    const login = async (e) => {
+        setLoadingpost(true);
+        e.preventDefault();
+        try {
+            const response = await AuthService.login(doctorData);
+            localStorage.setItem('access_token', response.token);
+            localStorage.setItem('user', JSON.stringify(response.data));
+            localStorage.setItem('role',"His");
+            setLoadingpost(false);
+            navigate(from);
+        } catch (error) {
+            setLoadingpost(false);
+            if(error.response){
+                if(error.response.status===401){
+                    toast.error("Tài khoản hoặc mật khẩu không đúng.");
+                }else{
+                    toast.error("lỗi không xác định.");
+                }
+            }
+        }
+    };
+    return (
+        <>
+        <Toaster 
+                position="top-right" 
+                toastOptions={{
+                duration: 3000, 
+                }}
+            />
+        <div class="container">
+            <section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
+
+                            <div class="d-flex justify-content-center py-4">
+                                <a href="index.html" class="logo d-flex align-items-center w-auto">
+                                    <img src="~/assets/img/logo.png" alt=""/>
+                                        <span class="d-none d-lg-block">NiceAdmin</span>
+                                </a>
+                            </div>
+
+                            <div class="card mb-3">
+
+                                <div class="card-body">
+
+                                    <div class="pt-4 pb-2">
+                                        <h5 class="card-title text-center pb-0 fs-4">Login to Your Account</h5>
+                                        <p class="text-center small">Enter your username & password to login</p>
+                                    </div>
+
+                                    <form onSubmit={login} class="row g-3 needs-validation" novalidate>
+
+                                        <div class="col-12">
+                                            <label for="yourUsername" class="form-label">Username</label>
+                                            <div class="input-group has-validation">
+                                                <span class="input-group-text" id="inputGroupPrepend"></span>
+                                                <input type="text" name="username" class="form-control" id="yourUsername" onInput={handleChangeInput} required/>
+                                                    <div class="invalid-feedback">Please enter your username.</div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12">
+                                            <label for="yourPassword" class="form-label">Password</label>
+                                            <input type="password" name="password" class="form-control" id="yourPassword" onInput={handleChangeInput} required/>
+                                                <div class="invalid-feedback">Please enter your password!</div>
+                                        </div>
+
+                                        <div class="col-12">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="remember" value="true" id="rememberMe"/>
+                                                    <label class="form-check-label" for="rememberMe">Remember me</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <button class="btn btn-primary w-100" type="submit" disabled={loadingpost}>{loadingpost?(<i className="fa-solid fa-spinner fa-spin"></i>):("Login")}</button>
+                                        </div>
+                                        <div class="col-12">
+                                            <p class="small mb-0">Don't have account? <a href="pages-register.html">Create an account</a></p>
+                                        </div>
+                                    </form>
+
+                                </div>
+                            </div>
+
+                            <div class="credits">
+                                Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+
+        </div>
+        </>
+    );
+}

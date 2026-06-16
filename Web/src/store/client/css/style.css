@@ -1,0 +1,141 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
+
+body {
+    font-family: 'Inter', sans-serif;
+}
+
+
+.active {
+    color: #ff9900 !important;
+}
+
+#chat-trigger-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1050;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s;
+}
+
+#chat-trigger-btn:hover {
+    transform: scale(1.1);
+}
+.chat-window {
+    position: fixed !important;
+    bottom: 110px !important;
+    right: 20px;
+    width: 380px;
+    height: 550px;
+    max-width: 90vw;
+    max-height: 80vh;
+    z-index: 1050;
+    display: none !important;
+    flex-direction: column;
+    border: none;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+    border-radius: 12px;
+    overflow: hidden;
+    /* Hiệu ứng mượt khi phóng to */
+}
+
+/* --- CLASS MỚI: CHẾ ĐỘ TOÀN MÀN HÌNH --- */
+.chat-window.fullscreen {
+    width: 100vw !important;
+    height: 100vh !important;
+    bottom: 0 !important;
+    right: 0 !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+    border-radius: 0 !important;
+}
+
+/* Hiệu ứng hiển thị */
+.chat-window.show {
+    display: flex !important;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Nội dung tin nhắn */
+.chat-body {
+    flex: 1;
+    overflow-y: auto;
+    background-color: #f8f9fa;
+    padding: 1rem;
+}
+
+/* Bong bóng chat */
+.msg-bubble {
+    max-width: 80%;
+    padding: 10px 15px;
+    border-radius: 15px;
+    font-size: 0.95rem;
+    position: relative;
+}
+
+.msg-bot {
+    background-color: #e9ecef;
+    color: #212529;
+    border-bottom-left-radius: 0;
+}
+
+.msg-user {
+    background-color: #0d6efd;
+    color: white;
+    border-bottom-right-radius: 0;
+    margin-left: auto;
+}
+
+.bot-avatar {
+    width: 35px;
+    height: 35px;
+    object-fit: contain;
+    border-radius: 50%;
+    margin-right: 10px;
+    align-self: flex-end;
+}
+
+.quick-action-btn {
+    background-color: white;
+    color: #0d6efd;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 8px;
+    margin-bottom: 5px;
+    font-weight: 500;
+    text-align: center;
+    cursor: pointer;
+    transition: 0.2s;
+    display: block;
+    width: 100%;
+}
+
+.quick-action-btn:hover {
+    background-color: #f1f8ff;
+    border-color: #0d6efd;
+}
+
+.timestamp {
+    font-size: 0.75rem;
+    color: #6c757d;
+    margin-top: 4px;
+}
+
+/* Cursor pointer cho các nút icon */
+.cursor-pointer {
+    cursor: pointer;
+}
