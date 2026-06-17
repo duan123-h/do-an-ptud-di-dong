@@ -36,7 +36,7 @@ export default function DosageformEdit() {
             setLoadingpost(false);
             console.log(">>> check message: ",response)
             toast.success(response.message);
-            navigate("/admin/Dosageform");
+            navigate("/his/Dosageform");
         } catch (error) {
             setLoadingpost(false);
             console.log(">>> check error: ",error)
@@ -56,7 +56,7 @@ export default function DosageformEdit() {
     return (
         <>
         <div className="d-flex mb-1">
-                <Link to="/Admin/Dosageform" className="btn btn-primary me-2"><i className="fa-solid fa-left-long"></i></Link>
+                <Link to="/his/Dosageform" className="btn btn-primary me-2"><i className="fa-solid fa-left-long"></i></Link>
                 <h3 class="m-0">chỉnh sửa dạng bào chế thuốc </h3>
                 <div className="d-flex flex ms-auto">
                     <button type="button" className="btn btn-primary ms-auto fs-5" disabled={loadingpost} onClick={updateDosageform}> {loadingpost?(<i className="fa-solid fa-spinner fa-spin"></i>):("Cập nhật")}</button>

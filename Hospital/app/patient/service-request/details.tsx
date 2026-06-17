@@ -60,7 +60,13 @@ export default function ServiceRequestDetailScreen() {
         const service = item.service;
 
         return (
-            <View className="border-b border-gray-200 py-3">
+            <TouchableOpacity 
+            onPress={() => router.push({
+                            pathname: "/patient/service-request/result",
+                            params: { id: item.servicerequestid  }
+                        })}
+            
+            className="border-b border-gray-200 py-3">
                 <View className="bg-white rounded-xl p-3 gap-y-2">
                     <View className="flex-row justify-between items-center">
                         <Text className="font-bold flex-1">
@@ -101,7 +107,7 @@ export default function ServiceRequestDetailScreen() {
                         )}
                     </View>
                 </View>
-            </View>
+            </TouchableOpacity>
         );
     };
 

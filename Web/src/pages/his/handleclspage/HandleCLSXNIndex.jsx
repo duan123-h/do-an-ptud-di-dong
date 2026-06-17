@@ -59,9 +59,9 @@ export default function HandleCLSXNIndex() {
                             <input name="search" type="text" className="form-control border-dark me-2" style={{ Width: '250px' }}
                                 id="exampleFormControlInput1" placeholder="name@example.com" />
                             <button className="btn btn-primary" type="submit"><i className="fa-solid fa-search"></i></button>
-                            <Link to="/His/Reception" className="btn btn-primary ms-2"><i className="fa-solid fa-rotate-right"></i></Link>
+                            <Link to="/His/clsxnrequest" className="btn btn-primary ms-2"><i className="fa-solid fa-rotate-right"></i></Link>
                         </form>
-                        <Link to="/His/Reception/create" className="btn btn-success mx-0 my-2 ms-sm-auto text-nowrap"><i className="fa-solid fa-plus me-2"></i>Thêm</Link>
+                        {/* <Link to="/His/Reception/create" className="btn btn-success mx-0 my-2 ms-sm-auto text-nowrap"><i className="fa-solid fa-plus me-2"></i>Thêm</Link> */}
                     </div>
                     <div className="table-responsive">
                         <table className="table" style={{ Width: '100%' }} >

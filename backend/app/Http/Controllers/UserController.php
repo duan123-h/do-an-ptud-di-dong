@@ -17,15 +17,30 @@ class UserController extends Controller
     public function index(Request $request)
     {
         $limit = $request->query("limit", null);
+        $usertype = $request->query("usertype", null);
+        $query = User::query()->with(["staffprofile.department", "patientprofile", "role"]);
+        if ($usertype) {
+            $query->where("usertype", $usertype);
+        }
         if ($limit == null) {
-            $data = User::get();
+            $data = $query->get()->map(function ($item) {
+                $t = $item->getAttributes();
+                $t["role"] = $item->role;
+                unset($t["password"]);
+                if ($item?->usertype == 1) {
+                    $t["profile"] = $item?->patientprofile;
+                } else {
+                    $t["profile"] = $item?->staffprofile;
+                }
+                return $t;
+            });
             return response()->json([
                 "success" => true,
                 "data" => $data,
                 "message" => "Lấy dữ liệu user thành công"
             ], 200);
         } else {
-            $data = User::paginate($limit);
+            $data = $query->paginate($limit);
             return response()->json([
                 "success" => true,
                 'totalpage' => $data->lastpage(),
@@ -104,7 +119,7 @@ class UserController extends Controller
      */
     public function show(string $id)
     {
-        $user = User::find($id);
+        $user = User::with(["staffprofile", "patientprofile", "role"])->find($id);
         if ($user == null) {
             return response()->json([
                 "success" => false,
@@ -112,9 +127,16 @@ class UserController extends Controller
                 "message" => "Không tồn tại user"
             ], 404);
         } else {
+            $data = $user->getAttributes();
+            unset($data["password"]);
+            if ($user->usertype == 1) {
+                $data["profile"] = $user?->patientprofile;
+            } else {
+                $data["profile"] = $user?->staffprofile;
+            }
             return response()->json([
                 "success" => true,
-                "data" => $user,
+                "data" => $data,
                 "message" => "Lấy dữ liệu user thành công"
             ], 200);
         }
@@ -134,15 +156,14 @@ class UserController extends Controller
     public function update(Request $request, string $id)
     {
         $request->validate([
-            "email" => "required|unique:tbluser,email,{$id},userid",
-            "phonenumber" => "required|unique:tbluser,phonenumber,{$id},userid",
-            'name'     => 'required',
+            "email" => "required",
+            "phone" => "required",
+            'fullname'     => 'required',
         ], [
+            "phone.required" => "Số điện thoại không được để trống",
             "email.required" => "Email không được để trống",
-            "email.unique" => "Email đã tồn tại",
-            "phonenumber.required" => "Số điện thoại không được để trống",
-            "phonenumber.unique" => "Số điện thoại đã tồn tại",
-            "name.required" => "Tên không được để trống",
+
+            "fullname.required" => "Tên không được để trống",
         ]);
         $user = User::find($id);
         if ($user == null) {
@@ -154,15 +175,36 @@ class UserController extends Controller
         }
         $data = $request->only([
             "avatar",
-            "name",
+            "fullname",
             "address",
-            "phonenumber",
+            "phone",
             "roleid",
             "email",
             "isactive",
         ]);
         try {
-            $user->update($data);
+            if ($user->usertype == 1) {
+
+                $profile = $user->parentprofile;
+                $profile->avatar = $data["avatar"];
+                $profile->fullname = $data["fullname"];
+                $profile->address = $data["address"];
+                $profile->phone = $data["phone"];
+                $profile->email = $data["email"];
+                $profile->save();
+            } else {
+
+                $profile = $user->staffprofile;
+                $profile->avatar = $data["avatar"];
+                $profile->fullname = $data["fullname"];
+                $profile->address = $data["address"];
+                $profile->phone = $data["phone"];
+                $profile->email = $data["email"];
+                $profile->save();
+            }
+
+            $user->roleid = $data["roleid"];
+            $user->isactive = $data["isactive"];
             $user->save();
             return response()->json([
                 "success" => true,
@@ -405,5 +447,4 @@ class UserController extends Controller
             ], 500);
         }
     }
-    
 }

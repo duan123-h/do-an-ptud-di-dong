@@ -39,7 +39,7 @@ export default function OutpatientclinicCreate() {
             const response = await Outpatientclinic.create(outpatientclinicData);
             setLoadingpost(false);
             toast.success(response.message);
-            navigate("/admin/Outpatientclinic");
+            navigate("/his/Outpatientclinic");
         } catch (error) {
             setLoadingpost(false);
             if (error.response && error.response.data && error.response.data.errors) {
@@ -58,7 +58,7 @@ export default function OutpatientclinicCreate() {
     return (
         <>
         <div className="d-flex mb-1">
-                <Link to="/Admin/Outpatientclinic" className="btn btn-primary me-2"><i className="fa-solid fa-left-long"></i></Link>
+                <Link to="/his/Outpatientclinic" className="btn btn-primary me-2"><i className="fa-solid fa-left-long"></i></Link>
                 <h3 className="m-0">Thêm phòng khám</h3>
                 <div className="d-flex flex ms-auto">
                     <button type="button" disabled={loadingpost} className="btn btn-primary fs-5" onClick={postOutpatientclinic}> {loadingpost?(<i className="fa-solid fa-spinner fa-spin"></i>):("Thêm")}</button>

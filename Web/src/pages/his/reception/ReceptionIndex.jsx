@@ -96,8 +96,8 @@ export default function ReceptionIndex() {
                                                 <td className="align-middle" style={{ minWidth: '170px', width: '170px' }}>
                                                     <a  target="_blank" href={`/His/Print/Reception/${item.outpatientregistrationid}`} className="btn btn-success mx-1 px-2 py-1"><i class="fa-solid fa-print fs-6"></i></a>
                                                     <Link to={`/His/Reception/edit/${item.outpatientregistrationid}`} className="btn btn-primary mx-1 px-2 py-1"><i className="fa-regular fa-edit fs-6"></i></Link>
-                                                    <button className="btn btn-danger mx-1 px-2 py-1"><i
-                                                        className="fa-regular fa-trash-can fs-6" onClick={() => handleDelete(item.outpatientregistrationid, item.patient?.fullname)}></i></button>
+                                                    <button className="btn btn-danger mx-1 px-2 py-1" onClick={() => handleDelete(item.outpatientregistrationid, item.patient?.fullname)}><i
+                                                        className="fa-regular fa-trash-can fs-6" ></i></button>
                                                 </td>
                                             </tr>
                                         );

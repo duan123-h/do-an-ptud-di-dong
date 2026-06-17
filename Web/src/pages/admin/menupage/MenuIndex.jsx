@@ -66,9 +66,9 @@ export default function MenuIndex() {
                             <input name="search" type="text" className="form-control border-dark me-2" style={{ Width: '250px' }}
                                 id="exampleFormControlInput1" placeholder="name@example.com" />
                             <button className="btn btn-primary" type="submit"><i className="fa-solid fa-search"></i></button>
-                            <Link to="/admin/Menu" className="btn btn-primary ms-2"><i className="fa-solid fa-rotate-right"></i></Link>
+                            <Link to="/his/Menu" className="btn btn-primary ms-2"><i className="fa-solid fa-rotate-right"></i></Link>
                         </form>
-                        <Link to="/admin/menu/create" className="btn btn-success mx-0 my-2 ms-sm-auto text-nowrap"><i className="fa-solid fa-plus me-2"></i>Thêm</Link>
+                        <Link to="/his/menu/create" className="btn btn-success mx-0 my-2 ms-sm-auto text-nowrap"><i className="fa-solid fa-plus me-2"></i>Thêm</Link>
                     </div>
                     <div className="table-responsive" >
                         <table className="table" style={{ Width: '100%' }} >
@@ -99,7 +99,7 @@ export default function MenuIndex() {
                                                 <td className="align-middle" style={{ minWidth: '170px', width: '170px' }}>
                                                     <button onClick={() => handleIsactive(item.menuid)} className={`btn ${item.isactive ? ` btn-warning ` : ` btn-success `}mx-1 px-2 py-1`}><i
                                                         className={`fa-regular  ${item.isactive ? ` fa-eye-slash ` : ` fa-eye `} fs-6`}></i></button>
-                                                    <Link to={`/admin/menu/edit/${item.menuid}`} className="btn btn-primary mx-1 px-2 py-1"><i className="fa-regular fa-edit fs-6"></i></Link>
+                                                    <Link to={`/his/menu/edit/${item.menuid}`} className="btn btn-primary mx-1 px-2 py-1"><i className="fa-regular fa-edit fs-6"></i></Link>
                                                     <button className="btn btn-danger mx-1 px-2 py-1"><i
                                                         className="fa-regular fa-trash-can fs-6" onClick={() => handleDelete(item.menuid, item.name)}></i></button>
                                                 </td>

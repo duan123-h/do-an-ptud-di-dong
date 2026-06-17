@@ -75,70 +75,49 @@ export default function RegistrationDetailScreen() {
                     <View className="flex-row justify-between items-center mb-4">
                         <View className="flex-row items-center gap-2">
                             <Ionicons name="person-circle" size={28} color="#475569" />
-                            <Text className="text-xl font-bold text-slate-800">ID: {outpatientRegistration?.outpatientregistrationid}</Text>
+                            <Text className="text-xl font-bold text-slate-800">Mã phiếu: {outpatientRegistration?.outpatientregistrationid}</Text>
                         </View>
                         {
-                            outpatientRegistration.examinationstatus == 0 && (
-                                <View className="bg-yellow-400 px-3 py-1 rounded-full">
-                                    <Text className="text-yellow-900 font-semibold text-sm">Chờ khám</Text>
-                                </View>
-                            )
-                        }
-                        {
                             outpatientRegistration.examinationstatus == 1 && (
-                                <View className="bg-blue-400 px-3 py-1 rounded-full">
-                                    <Text className="text-white font-semibold text-sm">Đang khám</Text>
+                                <View className="bg-yellow-400 px-3 py-1 rounded-full">
+                                    <Text className="text-yellow-900 font-semibold text-base">Chờ khám</Text>
                                 </View>
                             )
                         }
                         {
                             outpatientRegistration.examinationstatus == 2 && (
+                                <View className="bg-blue-400 px-3 py-1 rounded-full">
+                                    <Text className="text-white font-semibold text-base">Đang khám</Text>
+                                </View>
+                            )
+                        }
+                        {
+                            outpatientRegistration.examinationstatus == 3 && (
                                 <View className="bg-green-600 px-3 py-1 rounded-full">
-                                    <Text className="text-white font-semibold text-sm">Đã khám</Text>
+                                    <Text className="text-white font-semibold text-base">Đã khám</Text>
                                 </View>
                             )
                         }
 
                     </View>
 
-                    <View className="flex-row justify-between items-center mb-2">
-                        <View className="flex-row items-center gap-2">
-                            <Ionicons name="information-circle" size={20} color="#64748b" />
-                            {
-                                outpatientRegistration.examinationstatus == 0 && (
-                                    <Text className="text-slate-600 text-lg">Trạng thái: Chờ khám</Text>
-                                )
-                            }
-                            {
-                                outpatientRegistration.examinationstatus == 1 && (
-                                    <Text className="text-slate-600 text-lg">Trạng thái: Đang khám</Text>
-                                )
-                            }
-                            {
-                                outpatientRegistration.examinationstatus == 2 && (
-                                    <Text className="text-slate-600 text-lg">Trạng thái: Đã khám</Text>
-                                )
-                            }
-                        </View>
-                        <Text className="text-2xl font-black text-slate-800">#{outpatientRegistration?.queueorder}</Text>
-                    </View>
 
-                    <View className="flex-row items-center gap-2">
-                        <Ionicons name="time" size={20} color="#64748b" />
-                        <Text className="text-slate-600 text-lg">Thời gian đăng ký:  {dayjs(outpatientRegistration?.registrationtime).format("DD-MM-YYYY HH:mm")}</Text>
+                    <View className="flex-row gap-2">
+                        <Text className="text-2xl font-black text-slate-800">Số thứ tự: #{outpatientRegistration?.queueorder}</Text>
                     </View>
                 </View>
                 <View className="px-4">
                     <Text className="text-lg font-bold text-slate-800 mb-2">
                         1. THÔNG TIN BỆNH NHÂN
                     </Text>
-                    <View className="bg-white rounded-2xl p-4 shadow-sm border border-slate-100 space-y-3">
-                        <View className="flex-row justify-between items-center">
-                            <View className="flex-row items-center gap-3">
-                                <Ionicons name="person" size={18} color="#94a3b8" />
-                                <Text className="text-slate-700 text-lg">Tên: {outpatientRegistration?.patient?.fullname}</Text>
-                            </View>
-                            <Text className="text-slate-500 text-lg">(ID: {outpatientRegistration?.patient?.patientid})</Text>
+                    <View className="bg-white rounded-2xl p-4 shadow-sm border border-slate-100 flex-col gap-2 ">
+                        <View className="flex-row items-center gap-3">
+                            <Ionicons name="person" size={18} color="#94a3b8" />
+                            <Text className="text-slate-700 text-lg">Tên: {outpatientRegistration?.patient?.fullname}</Text>
+                        </View>
+                        <View className="flex-row items-center gap-3">
+                            <Ionicons name="person" size={18} color="#94a3b8" />
+                            <Text className="text-slate-500 text-lg">Mã bệnh nhân: {outpatientRegistration?.patient?.patientid}</Text>
                         </View>
 
                         <View className="flex-row items-center gap-3">
@@ -162,26 +141,18 @@ export default function RegistrationDetailScreen() {
 
                 <View className="px-4 mt-5">
                     <Text className="text-lg font-bold text-slate-800 mb-2">
-                        2. THÔNG TIN KHÁM
+                        2. THÔNG TIN NƠI KHÁM
                     </Text>
-                    <View className="bg-white rounded-2xl p-4 shadow-sm border border-slate-100 space-y-3">
-                        <View className="flex-row justify-between items-center">
-                            <View className="flex-row items-center gap-3">
-                                <MaterialCommunityIcons name="flask" size={18} color="#94a3b8" />
-                                <Text className="text-slate-700 text-lg">Khoa: {outpatientRegistration?.department?.name}</Text>
-                            </View>
-                            <Text className="text-slate-500 text-lg">(ID: {outpatientRegistration?.department?.departmentid})</Text>
+                    <View className="bg-white rounded-2xl p-4 shadow-sm border border-slate-100 flex-col gap-2">
+                        <View className="flex-row items-center gap-3">
+                            <MaterialCommunityIcons name="flask" size={18} color="#94a3b8" />
+                            <Text className="text-slate-700 text-lg">Khoa: {outpatientRegistration?.department?.name}</Text>
                         </View>
 
                         <View className="flex-row items-center gap-3">
                             <MaterialCommunityIcons name="hospital-building" size={18} color="#94a3b8" />
                             <Text className="text-slate-700 text-lg">Phòng khám: {outpatientRegistration?.outpatientclinic?.name}</Text>
                         </View>
-
-                        {/* <View className="flex-row items-center gap-3">
-                            <Ionicons name="briefcase" size={18} color="#94a3b8" />
-                            <Text className="text-slate-700 text-lg">Bác sĩ: TS.BS. Trần Văn H</Text>
-                        </View> */}
                     </View>
                 </View>
 
@@ -189,9 +160,14 @@ export default function RegistrationDetailScreen() {
                     <Text className="text-lg font-bold text-slate-800 mb-2">
                         3. THÔNG TIN ĐĂNG KÝ
                     </Text>
-                    <View className="bg-white rounded-2xl p-4 shadow-sm border border-slate-100 space-y-2">
-                        <View className="flex-row justify-between items-center">
+                    <View className="bg-white rounded-2xl p-4 shadow-sm border border-slate-100 flex-col gap-2">
+                        <View className="flex-row items-center  gap-2">
+                            <Ionicons name="person" size={18} color="#94a3b8" />
                             <Text className="text-slate-700 text-lg">Người đăng ký: {outpatientRegistration?.registrar?.stafftype?.code}. {outpatientRegistration?.registrar?.fullname}</Text>
+                        </View>
+                        <View className="flex-row items-center gap-2">
+                            <Ionicons name="time" size={20} color="#64748b" />
+                            <Text className="text-slate-600 text-lg">Thời gian đăng ký:  {dayjs(outpatientRegistration?.registrationtime).format("DD-MM-YYYY HH:mm")}</Text>
                         </View>
                     </View>
                 </View>

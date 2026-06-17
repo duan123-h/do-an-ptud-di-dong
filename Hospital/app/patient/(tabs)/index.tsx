@@ -69,7 +69,7 @@ export default function HomeScreen() {
     <SafeAreaView className="flex-1 gap-y-2">
       <View className="bg-primary-600 flex-row justify-between items-center p-3">
         <TouchableOpacity onPress={() => router.push("/patient/profile")} className="rounded-full w-16 h-16 border-2 border-yellow-600">
-          <Image resizeMode="cover" style={{ width: "100%", height: "100%" }} className=" rounded-full" source={{ uri: user?.profile?.avatar }}></Image>
+          <CircleAvatar style={{ width: "100%", height: "100%" }} image={user?.profile?.avatar} gender={user?.profile?.gender}></CircleAvatar>
         </TouchableOpacity>
         <Text className="text-white font-bold text-xl">{user?.profile?.fullname}</Text>
         <TouchableOpacity className="border rounded-full w-10 h-10 flex items-center justify-center bg-white">

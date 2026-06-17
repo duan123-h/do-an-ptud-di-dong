@@ -82,13 +82,13 @@ export default function SliderIndex() {
                             <button className="btn btn-primary" type="submit">
                                 <i className="fa-solid fa-search"></i>
                             </button>
-                            <Link to="/admin/slider" className="btn btn-primary ms-2">
+                            <Link to="/his/slider" className="btn btn-primary ms-2">
                                 <i className="fa-solid fa-rotate-right"></i>
                             </Link>
                         </form>
 
                         <Link
-                            to="/admin/slider/create"
+                            to="/his/slider/create"
                             className="btn btn-success mx-0 my-2 ms-sm-auto text-nowrap"
                         >
                             <i className="fa-solid fa-plus me-2"></i>Thêm
@@ -168,7 +168,7 @@ export default function SliderIndex() {
                                                     </button>
 
                                                     <Link
-                                                        to={`/admin/slider/edit/${item.sliderid}`}
+                                                        to={`/his/slider/edit/${item.sliderid}`}
                                                         className="btn btn-primary mx-1 px-2 py-1"
                                                     >
                                                         <i className="fa-regular fa-edit fs-6"></i>

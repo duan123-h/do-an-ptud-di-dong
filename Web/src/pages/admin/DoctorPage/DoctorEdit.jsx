@@ -1,6 +1,6 @@
 
 import toast from 'react-hot-toast';
-import Doctor from "../../../services/DoctorService";
+import StaffService from "../../../services/StaffService";
 import Department from "../../../services/DepartmentService";
 import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
@@ -23,7 +23,7 @@ export default function DoctorEdit() {
     }
     async function getDetailDoctor(id) {
         try{
-            const res = await Doctor.getDetail(id);
+            const res = await StaffService.getDetail(id);
             setDoctorData(res.data);
         }catch (error){
            if(error.response){
@@ -69,11 +69,11 @@ export default function DoctorEdit() {
         setLoadingpost(true);
         e.preventDefault();
         try {
-            const response = await Doctor.update(doctorData,id);
+            const response = await StaffService.update(doctorData,id);
             setLoadingpost(false);
             console.log(">>> check message: ", response)
             toast.success(response.message);
-            navigate("/admin/Doctor");
+            navigate("/his/Doctor");
         } catch (error) {
             setLoadingpost(false);
             console.log(">>> check error: ", error)
@@ -92,7 +92,7 @@ export default function DoctorEdit() {
     return (
         <>
             <div className="d-flex mb-1">
-                <Link to="/Admin/Doctor" className="btn btn-primary me-2"><i className="fa-solid fa-left-long"></i></Link>
+                <Link to="/his/Doctor" className="btn btn-primary me-2"><i className="fa-solid fa-left-long"></i></Link>
                 <h3 className="m-0">Thêm mới bác sĩ</h3>
                 <div className=" d-flex flex ms-auto">
                     <button type="button" className="btn btn-primary " disabled={loadingpost} onClick={updateDoctor}>{loadingpost?( <i className="fa-solid fa-spinner fa-spin"></i>):("Cập nhật")}</button>
@@ -114,14 +114,6 @@ export default function DoctorEdit() {
                             <input className="form-control border-primary" onInput={handleChangeInput} value={doctorData.email} type="text" name="email" id=""/>
                         </div>
                         <div className="py-1">
-                            <label htmlFor="" className="fw-bold">Tài khoản</label>
-                            <input className="form-control border-primary" onInput={handleChangeInput} value={doctorData.username} type="text" name="username" id=""/>
-                        </div>
-                        <div className="py-1">
-                            <label htmlFor="" className="fw-bold">Mật khẩu</label>
-                            <input className="form-control border-primary" onInput={handleChangeInput} value={doctorData.password} type="text" name="password" id=""/>
-                        </div>
-                        <div className="py-1">
                             <label htmlFor="" className="fw-bold">Khoa</label>
                             <select className="form-select border-primary" onChange={handleChangeInput} name="departmentid" aria-label="Default select example">
                                 <option selected>--</option>
@@ -136,8 +128,8 @@ export default function DoctorEdit() {
                         </div>
                         <div className="py-1 d-flex flex-column">
                             <label htmlFor="" className="fw-bold">Anh đại diện</label>
-                            <input className="form-control border-primary" type="text" onInput={handleChangeInput} value={doctorData.avartar} name="avartar" id="urlCoverImage "/>
-                                <img id="img" className="rounded-circle img-fluid mx-auto" style={{objectFit: 'cover',width: '150px',height:"150px"}} src={doctorData.avartar} alt=""/>
+                            <input className="form-control border-primary" type="text" onInput={handleChangeInput} value={doctorData.avatar} name="avatar" id="urlCoverImage "/>
+                                <img id="img" className="rounded-circle img-fluid mx-auto" style={{objectFit: 'cover',width: '150px',height:"150px"}} src={doctorData.avatar} alt=""/>
                                 </div>
                         </div>
                         <div className="col-12 col-md-6">

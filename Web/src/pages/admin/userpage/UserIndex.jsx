@@ -55,9 +55,9 @@ export default function UserIndex() {
                             <input name="search" type="text" className="form-control border-dark me-2" style={{ Width: '250px' }}
                                 id="exampleFormControlInput1" placeholder="name@example.com" />
                             <button className="btn btn-primary" type="submit"><i className="fa-solid fa-search"></i></button>
-                            <Link to="/admin/user" className="btn btn-primary ms-2"><i className="fa-solid fa-rotate-right"></i></Link>
+                            <Link to="/his/user" className="btn btn-primary ms-2"><i className="fa-solid fa-rotate-right"></i></Link>
                         </form>
-                        <Link to="/admin/user/create" className="btn btn-success mx-0 my-2 ms-sm-auto text-nowrap"><i className="fa-solid fa-plus me-2"></i>Thêm</Link>
+                        <Link to="/his/user/create" className="btn btn-success mx-0 my-2 ms-sm-auto text-nowrap"><i className="fa-solid fa-plus me-2"></i>Thêm</Link>
                     </div>
                     <div className="table-responsive">
                         <table className="table" style={{ Width: '100%' }} >
@@ -66,6 +66,7 @@ export default function UserIndex() {
                                     <th scope="col">Mã người dùng</th>
                                     <th scope="col">Ảnh đại diện</th>
                                     <th scope="col">Tên người dùng</th>
+                                    <th scope="col">Tài khoản</th>
                                     <th scope="col">Số điện thoại</th>
                                     <th scope="col">Emial</th>
                                     <th scope="col">Địa chỉ</th>
@@ -80,14 +81,15 @@ export default function UserIndex() {
                                             return (
                                                 <tr key={item.userid}>
                                                     <th className="align-middle" scope="row">{item.userid}</th>
-                                                    <td className="align-middle"><img className="rounded-circle img-fluid" style={{ objectFit: 'cover', minHeight: '60px', minWidth: '60px', maxHeight: '60px', maxWidth: '60px' }} src={item.avatar} alt="" /></td>
-                                                    <td className="align-middle" >{item.name}</td>
-                                                    <th className="align-middle">{item.phonenumber}</th>
-                                                    <td className="align-middle">{item.email}</td>
-                                                    <td className="align-middle" >{item.address}</td>
-                                                    <td className="align-middle" >{item.roleid}</td>
+                                                    <td className="align-middle"><img className="rounded-circle img-fluid" style={{ objectFit: 'cover', minHeight: '60px', minWidth: '60px', maxHeight: '60px', maxWidth: '60px' }} src={item.profile?.avatar} alt="" /></td>
+                                                    <td className="align-middle" >{item.profile?.fullname}</td>
+                                                    <th className="align-middle">{item.username}</th>
+                                                    <th className="align-middle">{item.profile?.phone}</th>
+                                                    <td className="align-middle">{item.profile?.email}</td>
+                                                    <td className="align-middle" >{item.profile?.address}</td>
+                                                    <td className="align-middle" >{item.role?.name}</td>
                                                     <td className="align-middle" style={{ minWidth: '110px', Width: '110px' }}>
-                                                        <Link to={`/admin/user/edit/${item.userid}`} className="btn btn-primary mx-1 px-2 py-1"><i className="fa-regular fa-edit fs-6"></i></Link>
+                                                        <Link to={`/his/user/edit/${item.userid}`} className="btn btn-primary mx-1 px-2 py-1"><i className="fa-regular fa-edit fs-6"></i></Link>
                                                         <button className="btn btn-danger mx-1 px-2 py-1"><i
                                                             className="fa-regular fa-trash-can fs-6" onClick={() => handleDelete(item.userid, item.name)}></i></button>
                                                     </td>

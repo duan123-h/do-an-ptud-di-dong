@@ -1,4 +1,4 @@
-import AdminLayout from "../../../layouts/admin/AdminLayout";
+
 import toast from 'react-hot-toast';
 import user from "../../../services/UserService";
 import { useState } from "react";
@@ -32,7 +32,7 @@ export default function UserCreate() {
             setLoadingpost(false);
             console.log(">>> check message: ",response)
             toast.success(response.message);
-            navigate("/admin/user");
+            navigate("/his/user");
         } catch (error) {
             setLoadingpost(false);
             console.log(">>> check error: ",error)
@@ -51,7 +51,7 @@ export default function UserCreate() {
     return (
         <>
             <div className="d-flex mb-1">
-                <Link to="/Admin/User" className="btn btn-primary me-2"><i className="fa-solid fa-left-long"></i></Link>
+                <Link to="/his/User" className="btn btn-primary me-2"><i className="fa-solid fa-left-long"></i></Link>
                 <h3 className="m-0">Thêm mới người dùng</h3>
             </div>
             <form className="pb-2">

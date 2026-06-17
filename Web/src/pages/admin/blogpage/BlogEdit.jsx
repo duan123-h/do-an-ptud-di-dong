@@ -47,7 +47,7 @@ export default function BlogEdit() {
             const response = await Blog.update(blogData, id);
             setLoadingPost(false);
             toast.success(response.message || "Cập nhật blog thành công");
-            navigate("/admin/blog");
+            navigate("/his/blog");
         } catch (error) {
             setLoadingPost(false);
             if (error.response && error.response.data && error.response.data.errors) {
@@ -66,7 +66,7 @@ export default function BlogEdit() {
     return (
         <>
             <div className="d-flex mb-1">
-                <Link to="/admin/blog" className="btn btn-primary me-2">
+                <Link to="/his/blog" className="btn btn-primary me-2">
                     <i className="fa-solid fa-left-long"></i>
                 </Link>
                 <h3 className="m-0">Chỉnh sửa bài viết</h3>

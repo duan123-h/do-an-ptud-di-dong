@@ -51,7 +51,7 @@ export default function DepartmentEdit() {
             const response = await Department.update(departmentData,id);
             setLoadingpost(false);
             toast.success(response.message);
-            navigate("/admin/Department");
+            navigate("/his/Department");
         } catch (error) {
             setLoadingpost(false);
             if (error.response && error.response.data && error.response.data.errors) {
@@ -70,7 +70,7 @@ export default function DepartmentEdit() {
     return (
         <>
         <div className="d-flex mb-1">
-                <Link to="/Admin/Department" className="btn btn-primary me-2"><i className="fa-solid fa-left-long"></i></Link>
+                <Link to="/his/Department" className="btn btn-primary me-2"><i className="fa-solid fa-left-long"></i></Link>
                 <h3 className="m-0">Chỉnh sửa khoa</h3>
                 <div className=" d-flex flex ms-auto">
                     <button type="button" className="btn btn-primary fs-5" disabled={loadingpost} onClick={updateDepartment}> {loadingpost?(<i className="fa-solid fa-spinner fa-spin"></i>):("Cập nhật")}</button>

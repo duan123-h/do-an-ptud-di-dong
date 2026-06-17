@@ -78,7 +78,7 @@ class MedicalexaminationController extends Controller
                 ], 404);
             }
             $query = MedicalExamination::with(['patient', 'outpatientclinic', 'outpatientregistration', 'disease', 'doctor.staffprofile.stafftype', 'secondarydiseases', 'disposition'])
-                ->where('medicalexaminationid', $id)
+                ->where('outpatientregistrationid', $id)
                 ->first();
             if (!$query) {
                 $query['outpatientclinic'] = $item->outpatientclinic;
@@ -458,6 +458,53 @@ class MedicalexaminationController extends Controller
                 "status" => false,
                 "data" => [],
                 "message" => "Lỗi không xác định"
+            ], 500);
+        }
+    }
+    public function showByUser(string $id)
+    {
+        try {
+            $item = Outpatientregistration::with(['outpatientclinic', 'patient'])->find($id);
+            if (!$item) {
+                return response()->json([
+                    "status" => true,
+                    "data" => [],
+                    "message" => "Không tồn tại phiếu đăng ký khám bệnh!"
+                ], 404);
+            }
+            $query = MedicalExamination::with(['patient', 'outpatientclinic', 'outpatientregistration', 'disease', 'doctor.staffprofile.stafftype', 'secondarydiseases', 'disposition'])
+                ->where('medicalexaminationid', $id)
+                ->first();
+            if (!$query) {
+                $query['outpatientclinic'] = $item->outpatientclinic;
+                $query['patient'] = $item->patient;
+                $query['outpatientregistration'] = $item->getAttributes();
+                return response()->json([
+                    "status" => true,
+                    "data" => $query,
+                    "message" => "Lấy dữ liệu phiếu khám bệnh thành công!"
+                ], 200);
+            }
+            $data = $query->getAttributes();
+            $data['patient'] = $query->patient;
+            $data['outpatientclinic'] = $query->outpatientclinic;
+            $data['outpatientregistration'] = $query->outpatientregistration;
+            $data['disease'] = $query->disease;
+            $data['secondarydiseases'] = $query->secondarydiseases;
+            $data['doctor'] = $query->doctor->staffprofile;
+            $data['disposition'] = $query->disposition;
+
+
+            return response()->json([
+                "status" => true,
+                "data" => $data,
+                "message" => "Lấy dữ liệu phiếu khám bệnh thành công"
+            ], 200);
+        } catch (Exception $e) {
+            return response()->json([
+                "success" => false,
+                "data" => [],
+                "message" => "Lưu thông tin khám bệnh thất bại",
             ], 500);
         }
     }

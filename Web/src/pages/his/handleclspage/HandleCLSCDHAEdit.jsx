@@ -1,5 +1,6 @@
 import toast from 'react-hot-toast';
 import Servicerequestdetail from "../../../services/his/ServicerequestdetailService";
+import ImagingResultService from "../../../services/ImagingResultService";
 import { useEffect, useState } from "react";
 import { Link, useAsyncError, useLocation, useNavigate, useParams } from "react-router-dom";
 import 'react-quill/dist/quill.snow.css'
@@ -11,94 +12,72 @@ export default function HandleCLSCDHAEdit() {
     const location = useLocation();
     const navigate = useNavigate();
     const [clsDetailData, setCLSDetailData] = useState({});
+    const [formData, setFormData] = useState({
+        description: "",
+        conclusion: "",
+        resultimage: ""
+    });
     const [loadingSave, setloadingSave] = useState(false);
     const [loadingEndOrStart, setLoadingEndOrStart] = useState(false);
     async function getCLSDetail(id) {
         try {
             const res = await Servicerequestdetail.getDetail(id);
-            console.log("check data cls detail: ", res.data);
-            setCLSDetailData(res.data);
+
+            const data = res.data;
+            setCLSDetailData(data);
+
+            setFormData({
+                description: data.imagingresult?.description || "",
+                conclusion: data.imagingresult?.conclusion || "",
+                resultimage: data.imagingresult?.resultimage || ""
+            });
+
         } catch (error) {
             toast.error("lỗi không thể lấy chi tiết phiếu CLS.");
         }
-    };
+    }
     useEffect(() => {
         getCLSDetail(id);
     }, [location]);
 
     function handleChangeInput(e) {
-        var name = e.target.name;
-        var value = e.target.value;
-        setCLSDetailData(input => ({
-            ...input,
-            [name]: value
-        }))
-    }
+        const { name, value } = e.target;
 
+        setFormData(prev => ({
+            ...prev,
+            [name]: value
+        }));
+    }
+    
     const handlehandleCLSSave = async (e) => {
-        setloadingSave(true);
         e.preventDefault();
+        setloadingSave(true);
+
         try {
-            const data = {
-                result: clsDetailData.result,
-                resultimage: clsDetailData.resultimage
-            }
-            const response = await Servicerequestdetail.update(clsDetailData, id);
-            setloadingSave(false);
+            const payload = {
+                servicerequestdetailid: id,
+                description: formData.description,
+                conclusion: formData.conclusion,
+                resultimage: formData.resultimage
+            };
+
+            const response = await ImagingResultService.update(payload, id);
+
             toast.success(response.message);
+            setloadingSave(false);
+
         } catch (error) {
             setloadingSave(false);
-            console.log(">>> check error: ", error)
-            if (error.response && error.response.data && error.response.data.errors) {
-                Object.values(error.response.data.errors).map((errArray) =>
-                    errArray.map((msg) => toast.error(msg))
+
+            if (error.response?.data?.errors) {
+                Object.values(error.response.data.errors).forEach(arr =>
+                    arr.forEach(msg => toast.error(msg))
                 );
-            } else if (error.response && error.response.data && error.response.data.message) {
-                toast.error(error.response.data.message);
             } else {
                 toast.error("Có lỗi xảy ra, vui lòng thử lại.");
             }
-            console.error("Error fetching Receptiontypes:", error);
         }
     };
-    function handleCLSStart(name) {
-        mysal.fire({
-            title: `Bạn có chắc muốn bắt thực hiện CLS cho bệnh nhân ${name} không?`,
-            text: "Hành động này không thể hoàn tác!",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#d33",
-            cancelButtonColor: "#3085d6",
-            confirmButtonText: "Đồng ý",
-            cancelButtonText: "Hủy",
-        }).then(async (result) => {
-            if (result.isConfirmed) {
-                try {
-                    setLoadingEndOrStart(true);
-                    const res = await Servicerequestdetail.start(id);
-                    setCLSDetailData(prev => ({
-                        ...prev,
-                        ...res.data
-                    }))
-                    setLoadingEndOrStart(false);
-                } catch (error) {
-                    setLoadingEndOrStart(false);
-                    console.log(">>> check error: ", error)
-                    if (error.response && error.response.data && error.response.data.errors) {
-                        Object.values(error.response.data.errors).map((errArray) =>
-                            errArray.map((msg) => toast.error(msg))
-                        );
-                    } else if (error.response && error.response.data && error.response.data.message) {
-                        toast.error(error.response.data.message);
-                    } else {
-                        toast.error("Có lỗi xảy ra, vui lòng thử lại.");
-                    }
-                    console.error("Error fetching Receptiontypes:", error);
-                }
-            }
-        });
-
-    }
     function handleCLSEnd(name) {
         mysal.fire({
             title: `Bạn có chắc muốn kết thúc thực hiện CLS cho bệnh nhân ${name} không?`,
@@ -136,12 +115,36 @@ export default function HandleCLSCDHAEdit() {
             }
         });
     }
+    function handleCLSStart(name) {
+            mysal.fire({
+                title: `Bắt đầu CLS cho ${name}?`,
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Đồng ý",
+                cancelButtonText: "Hủy",
+            }).then(async (result) => {
+                if (!result.isConfirmed) return;
+    
+                try {
+                    setLoadingEndOrStart(true);
+    
+                    const res = await Servicerequestdetail.start(id);
+    
+                    setCLSDetailData(prev => ({ ...prev, ...res.data }));
+    
+                    setLoadingEndOrStart(false);
+                } catch (error) {
+                    setLoadingEndOrStart(false);
+                    toast.error("Có lỗi xảy ra");
+                }
+            });
+        }
     return (
         <>
             <div class="card shadow-sm">
                 <div class="card-body">
                     <div class="d-flex align-items-center">
-                        <Link class="btn btn-primary me-3" to="/his/clsrequest/"><i class="fa-solid fa-left-long"></i></Link>
+                        <Link class="btn btn-primary me-3" to="/his/clscdharequest/"><i class="fa-solid fa-left-long"></i></Link>
                         <h4 class="card-title">Thực hiện cận lâm sàng</h4>
                     </div>
                     <div className="d-flex mb-2" style={{ gap: '8px' }}>
@@ -210,43 +213,67 @@ export default function HandleCLSCDHAEdit() {
                                     <div
                                         className={`form-control form-control-sm fw-bold bg-white text-dark`}
 
-                                    >{clsDetailData.starttime?new Date(clsDetailData.starttime).toLocaleString('vi-VN'):"-"}</div>
+                                    >{clsDetailData.starttime ? new Date(clsDetailData.starttime).toLocaleString('vi-VN') : "-"}</div>
                                 </div>
                                 <div class="col-md-3 mb-2">
                                     <label class="form-label">Thời gian kết thúc:</label>
                                     <div
                                         className={`form-control form-control-sm fw-bold bg-white text-dark`}
 
-                                    >{clsDetailData.endtime?new Date(clsDetailData.endtime).toLocaleString('vi-VN'):"-"}</div>
+                                    >{clsDetailData.endtime ? new Date(clsDetailData.endtime).toLocaleString('vi-VN') : "-"}</div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <form onSubmit={(e)=>e.preventDefault()}>
-                        <div class="mb-3">
-                            <label for="result" class="form-label">Kết quả cận lâm sàng ({clsDetailData.service?.name}):</label>
-                            <textarea onChange={handleChangeInput} class="form-control" id="result" name="result" rows="4" required value={clsDetailData.result}></textarea>
+                    <form onSubmit={(e) => e.preventDefault()}>
+                        <div className="mb-3">
+                            <label className="form-label">Mô tả kết quả</label>
+                            <textarea
+                                className="form-control"
+                                name="description"
+                                rows="4"
+                                value={formData.description}
+                                onChange={handleChangeInput}
+                                disabled={clsDetailData.status !== 1}
+                            />
                         </div>
 
-                        <div class="mb-3">
-                            <label for="resultimage" class="form-label">Đường dẫn ảnh kết quả:</label>
-                            <input onInput={handleChangeInput} type="text" class="form-control" id="resultimage" value={clsDetailData.resultimage} name="resultimage"
-                                placeholder="Nhập đường dẫn ảnh..." />
+                        <div className="mb-3">
+                            <label className="form-label">Kết luận</label>
+                            <textarea
+                                className="form-control"
+                                name="conclusion"
+                                rows="3"
+                                value={formData.conclusion}
+                                onChange={handleChangeInput}
+                                disabled={clsDetailData.status !== 1}
+                            />
                         </div>
 
-                        <div class="mb-3">
-                            <label class="form-label">Xem trước ảnh:</label>
-                            <div>
-                                {clsDetailData.resultimage ? (
-                                    <img id="imagePreview" src={clsDetailData.resultimage} alt="Xem trước ảnh kết quả" class="img-fluid border"
-                                        style={{ maxHeight: '300px' }} />
-                                ) : (
-                                    <h4>
-                                        Chưa có kết quả hình ảnh trả về!!!
-                                    </h4>
-                                )}
+                        <div className="mb-3">
+                            <label className="form-label">Đường dẫn ảnh</label>
+                            <input
+                                type="text"
+                                className="form-control"
+                                name="resultimage"
+                                value={formData.resultimage}
+                                onChange={handleChangeInput}
+                                disabled={clsDetailData.status !== 1}
+                            />
+                        </div>
 
-                            </div>
+                        <div className="mb-3">
+                            <label className="form-label">Xem trước ảnh</label>
+                            {formData.resultimage ? (
+                                <img
+                                    src={formData.resultimage}
+                                    alt="preview"
+                                    className="img-fluid border"
+                                    style={{ maxHeight: "300px" }}
+                                />
+                            ) : (
+                                <h6>Chưa có hình ảnh</h6>
+                            )}
                         </div>
                     </form>
                 </div>

@@ -75,7 +75,7 @@ class Servicerequestdetail extends Model
     public function labresults()
     {
         return $this->hasMany(
-            Labresultdetail::class,
+            LabResultDetail::class,
             "servicerequestdetailid",
             "servicerequestdetailid"
         );

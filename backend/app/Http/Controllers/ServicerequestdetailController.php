@@ -62,7 +62,9 @@ class ServicerequestdetailController extends Controller
             'patient',
             'requester',
             'medicalexamination',
-            'service.labparameters.labparameterranges'
+            'service.labparameters.labparameterranges',
+            'labresults',
+            'imagingresult'
         ])->find($id);
         if ($Servicerequestdetail == null) {
             return response()->json([
@@ -75,6 +77,8 @@ class ServicerequestdetailController extends Controller
             $data['patient'] = $Servicerequestdetail->patient;
             $data['medicalexamination'] = $Servicerequestdetail->medicalexamination;
             $data['service'] = $Servicerequestdetail->service;
+            $data['labresults'] = $Servicerequestdetail->labresults;
+            $data['imagingresult'] = $Servicerequestdetail->imagingresult;
             $requester = $Servicerequestdetail->registrar;
             if ($requester) {
                 if ($requester->usertype == 1) {
@@ -259,75 +263,66 @@ class ServicerequestdetailController extends Controller
         }
     }
 
+    
     public function result(string $id)
     {
-        try {
-            $detail = Servicerequestdetail::with([
-                'service',
-                'execution.labResult.details.parameter',
-                'execution.clinicalResult.files'
-            ])->find($id);
+        $Servicerequestdetail = Servicerequestdetail::with([
+            'patient',
+            'requester',
+            'medicalexamination',
+            'service.labparameters.labparameterranges',
+            'labresults',
+            'imagingresult'
+        ])->find($id);
 
-            if (!$detail) {
-                return response()->json([
-                    "status" => false,
-                    "data" => [],
-                    "message" => "Không tồn tại phiếu CLS này"
-                ], 404);
-            }
-
-            $result = null;
-
-            // CASE 1: LAB (xét nghiệm)
-            if ($detail->service->servicecategoryid == 2) {
-                $lab = $detail->execution->labResult ?? null;
-
-                if ($lab) {
-                    $result = [
-                        "type" => "LAB",
-                        "verified_time" => $lab->verifiedtime,
-                        "items" => $lab->details->map(function ($d) {
-                            return [
-                                "code" => $d->parameter->code,
-                                "name" => $d->parameter->name,
-                                "value" => $d->resultvalue,
-                                "unit" => $d->parameter->unit,
-                            ];
-                        })
-                    ];
-                }
-            }
-
-            // CASE 2: IMAGING / ECG / FUNCTIONAL
-            else {
-                $clinical = $detail->execution->clinicalResult ?? null;
-
-                if ($clinical) {
-                    $result = [
-                        "type" => "CLINICAL",
-                        "description" => $clinical->description,
-                        "conclusion" => $clinical->conclusion,
-                        "files" => $clinical->files->map(function ($f) {
-                            return [
-                                "url" => $f->fileurl,
-                                "type" => $f->filetype
-                            ];
-                        })
-                    ];
-                }
-            }
-
+        if ($Servicerequestdetail == null) {
             return response()->json([
-                "status" => true,
-                "data" => $result,
-                "message" => "Lấy kết quả thành công"
-            ]);
-        } catch (\Exception $e) {
-            return response()->json([
-                "status" => false,
+                "success" => false,
                 "data" => [],
-                "message" => $e->getMessage()
-            ], 500);
+                "message" => "Không tồn tại phiếu CLS"
+            ], 404);
         }
+        if ($Servicerequestdetail->status != 2) {
+            return response()->json([
+                "success" => true,
+                "data" => [],
+                "message" => "Chưa  có kết quả khám bệnh"
+            ], 200);
+        }
+
+
+        $data = $Servicerequestdetail->getAttributes();
+
+        $data['patient'] = $Servicerequestdetail->patient;
+        $data['medicalexamination'] = $Servicerequestdetail->medicalexamination;
+        $data['service'] = $Servicerequestdetail->service;
+        $data['labresults'] = $Servicerequestdetail->labresults;
+        $data['imagingresult'] = $Servicerequestdetail->imagingresult;
+
+        if ($Servicerequestdetail->labresults && $Servicerequestdetail->labresults->count() > 0) {
+            $data['resulttype'] = "LAB";
+        } elseif ($Servicerequestdetail->imagingresult) {
+            $data['resulttype'] = "CDHA";
+        } else {
+            $data['resulttype'] = null;
+        }
+        
+        $requester = $Servicerequestdetail->registrar;
+
+        if ($requester) {
+            if ($requester->usertype == 1) {
+                $data['requester'] = $requester->patientprofile;
+            } else {
+                $data['requester'] = $requester->staffprofile->load('stafftype');
+            }
+        } else {
+            $data['registrar'] = null;
+        }
+
+        return response()->json([
+            "success" => true,
+            "data" => $data,
+            "message" => "Lấy dữ liệu phiếu CLS thành công"
+        ], 200);
     }
 }

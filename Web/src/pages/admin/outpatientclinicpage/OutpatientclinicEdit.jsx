@@ -61,7 +61,7 @@ export default function OutpatientclinicCreate() {
             const response = await Outpatientclinic.update(outpatientclinicData,id);
             setLoadingpost(false);
             toast.success(response.message);
-            navigate("/admin/Outpatientclinic");
+            navigate("/his/Outpatientclinic");
         } catch (error) {
             setLoadingpost(false);
             if (error.response && error.response.data && error.response.data.errors) {
@@ -80,7 +80,7 @@ export default function OutpatientclinicCreate() {
     return (
         <>
         <div className="d-flex mb-1">
-                <Link to="/Admin/Outpatientclinic" className="btn btn-primary me-2"><i className="fa-solid fa-left-long"></i></Link>
+                <Link to="/his/Outpatientclinic" className="btn btn-primary me-2"><i className="fa-solid fa-left-long"></i></Link>
                 <h3 className="m-0">Chỉnh sửa phòng khám</h3>
                 <div className="py-1 d-flex flex ms-auto">
                     <button type="button" disabled={loadingpost} className="btn btn-primary fs-5" onClick={updateOutpatientclinic}> {loadingpost?(<i className="fa-solid fa-spinner fa-spin"></i>):("Cập nhật")}</button>

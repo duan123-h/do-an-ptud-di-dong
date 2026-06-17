@@ -81,14 +81,25 @@ import HomePage from "../pages/client/HomePage";
 import ClientLayout from "../layouts/client/ClientLayout";
 import BlogDetail from "../pages/client/blogpage/BlogDetail";
 
+import InventoryIndex from "../pages/warehouse/inventory/InventoryIndex";
+import ImportReceiptIndex from "../pages/warehouse/importreceipt/ImportReceiptIndex";
+import ExportPrescription from "../pages/warehouse/export/ExportPrescription";
+
 export default function MyRoute() {
     return (
         <Routes>
             <Route path="login" element={<Login />}>
             </Route>
+            <Route element={<ProtectedRoute allowedRoles={["Admin", "WarehouseManager"]} />}>
+                <Route path="/his" element={<AdminLayout />}>
+                    <Route index element={<HomeIndex />} />
+                    <Route path="inventory" element={<InventoryIndex />} />
+                    <Route path="importreceipt" element={<ImportReceiptIndex />} />
+                    <Route path="exportprescription" element={<ExportPrescription />} />
+                </Route>
+            </Route>
             <Route element={<ProtectedRoute allowedRoles={["Admin", "Doctor"]} />}>
                 <Route path="/his" element={<AdminLayout />}>
-                    {/* docter */}
                     <Route index element={<HomeIndex />} />
                     <Route path="user" element={<UserIndex />} />
 
@@ -114,6 +125,7 @@ export default function MyRoute() {
 
             <Route element={<ProtectedRoute allowedRoles={["Admin"]} />}>
                 <Route path="/his" element={<AdminLayout />}>
+                    <Route index element={<HomeIndex />} />
 
                     {/* admin */}
 

@@ -68,7 +68,7 @@ export default function DoctorCreate() {
             setLoadingpost(false);
             console.log(">>> check message: ", response)
             toast.success(response.message);
-            navigate("/admin/Doctor");
+            navigate("/his/Doctor");
         } catch (error) {
             setLoadingpost(false);
             console.log(">>> check error: ", error)
@@ -87,7 +87,7 @@ export default function DoctorCreate() {
     return (
         <>
             <div className="d-flex mb-1">
-                <Link to="/Admin/Doctor" className="btn btn-primary me-2"><i className="fa-solid fa-left-long"></i></Link>
+                <Link to="/his/Doctor" className="btn btn-primary me-2"><i className="fa-solid fa-left-long"></i></Link>
                 <h3 className="m-0">Thêm mới bác sĩ</h3>
                 <div className=" d-flex flex ms-auto">
                     <button type="button" className="btn btn-primary " disabled={loadingpost} onClick={postDoctor}>{loadingpost?( <i className="fa-solid fa-spinner fa-spin"></i>):("Thêm")}</button>

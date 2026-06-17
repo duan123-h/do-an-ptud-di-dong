@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
 import ServiceRequestService from "../../services/ServicerequestService";
+import ServicerequestdetailService from "../../services/ServicerequestdetailService";
 import { transformQuillHtml } from "@/utils/function";
 
 
 export const useServiceRequestViewModel = () => {
   const [serviceRequests, setServiceRequests] = useState<any[]>([]);
   const [serviceRequestDetails, setServiceRequestDetails] = useState<any[]>([]);
+  const [resultDetail, setResultDetail] = useState<any>({});
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<any>(null);
 
@@ -37,6 +39,20 @@ export const useServiceRequestViewModel = () => {
       setLoading(false);
     }
   };
+  const fetchServiceRequestDetailResult = async (id: any) => {
+    setLoading(true);
+    try {
+      const response = await ServicerequestdetailService.result(id);
+      setResultDetail(response.data);
+      console.log(response.data.length);
+    } catch (err: any) {
+      console.log(err);
+      console.error(err);
+      setError(err.message || "Đã có lỗi xảy ra");
+    } finally {
+      setLoading(false);
+    }
+  };
 
 
 
@@ -47,7 +63,9 @@ export const useServiceRequestViewModel = () => {
     error,
     refreshServiceRequests: fetchServiceRequests,
     fetchServiceRequestDetails,
-    serviceRequestDetails
+    serviceRequestDetails,
+    fetchServiceRequestDetailResult,
+    resultDetail
   };
 };
 

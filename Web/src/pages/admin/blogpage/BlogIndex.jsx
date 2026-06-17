@@ -74,10 +74,10 @@ export default function BlogIndex() {
                             <input name="search" type="text" className="form-control border-dark me-2"
                                 style={{ width: "250px" }} placeholder="Tìm kiếm..." />
                             <button className="btn btn-primary" type="submit"><i className="fa-solid fa-search"></i></button>
-                            <Link to="/admin/blog" className="btn btn-primary ms-2"><i className="fa-solid fa-rotate-right"></i></Link>
+                            <Link to="/his/blog" className="btn btn-primary ms-2"><i className="fa-solid fa-rotate-right"></i></Link>
                         </form>
 
-                        <Link to="/admin/blog/create" className="btn btn-success mx-0 my-2 ms-sm-auto text-nowrap">
+                        <Link to="/his/blog/create" className="btn btn-success mx-0 my-2 ms-sm-auto text-nowrap">
                             <i className="fa-solid fa-plus me-2"></i>Thêm
                         </Link>
                     </div>
@@ -129,7 +129,7 @@ export default function BlogIndex() {
                                                     <i className={`fa-regular ${item.isactive ? "fa-eye-slash" : "fa-eye"} fs-6`}></i>
                                                 </button>
 
-                                                <Link to={`/admin/blog/edit/${item.blogid}`}
+                                                <Link to={`/his/blog/edit/${item.blogid}`}
                                                     className="btn btn-primary mx-1 px-2 py-1">
                                                     <i className="fa-regular fa-edit fs-6"></i>
                                                 </Link>

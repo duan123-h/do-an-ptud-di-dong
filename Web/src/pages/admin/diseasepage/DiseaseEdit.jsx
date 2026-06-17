@@ -54,7 +54,7 @@ export default function DiseaseEdit() {
             const response = await Disease.update(diseaseData,id);
             setLoadingpost(false);
             toast.success(response.message);
-            navigate("/admin/Disease");
+            navigate("/his/Disease");
         } catch (error) {
             setLoadingpost(false);
             if (error.response && error.response.data && error.response.data.errors) {
@@ -73,7 +73,7 @@ export default function DiseaseEdit() {
     return (
         <>
         <div className="d-flex mb-1">
-                <Link to="/Admin/Disease" className="btn btn-primary me-2"><i className="fa-solid fa-left-long"></i></Link>
+                <Link to="/his/Disease" className="btn btn-primary me-2"><i className="fa-solid fa-left-long"></i></Link>
                 <h3 className="m-0">Chỉnh sửa bệnh</h3>
                 <div className="d-flex flex ms-auto">
                     <button type="button" className="btn btn-primary ms-auto fs-5" disabled={loadingpost} onClick={updateDisease}> {loadingpost?(<i className="fa-solid fa-spinner fa-spin"></i>):("Cập nhật")}</button>

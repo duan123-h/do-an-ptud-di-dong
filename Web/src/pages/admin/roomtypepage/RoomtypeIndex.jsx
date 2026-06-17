@@ -63,9 +63,9 @@ export default function RoomtypeIndex() {
                             <input name="search" type="text" className="form-control border-dark me-2" style={{ Width: '250px' }}
                                 id="exampleFormControlInput1" placeholder="name@example.com" />
                             <button className="btn btn-primary" type="submit"><i className="fa-solid fa-search"></i></button>
-                            <Link to="/admin/Roomtype" className="btn btn-primary ms-2"><i className="fa-solid fa-rotate-right"></i></Link>
+                            <Link to="/his/Roomtype" className="btn btn-primary ms-2"><i className="fa-solid fa-rotate-right"></i></Link>
                         </form>
-                        <Link to="/admin/Roomtype/create" className="btn btn-success mx-0 my-2 ms-sm-auto text-nowrap"><i className="fa-solid fa-plus me-2"></i>Thêm</Link>
+                        <Link to="/his/Roomtype/create" className="btn btn-success mx-0 my-2 ms-sm-auto text-nowrap"><i className="fa-solid fa-plus me-2"></i>Thêm</Link>
                     </div>
                     <div className="table-responsive">
                         <table className="table" style={{ Width: '100%' }} >
@@ -87,7 +87,7 @@ export default function RoomtypeIndex() {
                                                     <td className="align-middle" >{item.name}</td>
                                                     <td className="align-middle">{formatVND(item.price)}</td>
                                                     <td className="align-middle" style={{ minWidth: '110px', width: '110px' }}>
-                                                        <Link to={`/admin/Roomtype/edit/${item.roomtypeid}`} className="btn btn-primary mx-1 px-2 py-1"><i className="fa-regular fa-edit fs-6"></i></Link>
+                                                        <Link to={`/his/Roomtype/edit/${item.roomtypeid}`} className="btn btn-primary mx-1 px-2 py-1"><i className="fa-regular fa-edit fs-6"></i></Link>
                                                         <button className="btn btn-danger mx-1 px-2 py-1"><i
                                                             className="fa-regular fa-trash-can fs-6" onClick={() => handleDelete(item.roomtypeid, item.name)}></i></button>
                                                     </td>

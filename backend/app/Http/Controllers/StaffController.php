@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Staff;
+use Exception;
 use Illuminate\Http\Request;
 
 class StaffController extends Controller
@@ -20,8 +21,6 @@ class StaffController extends Controller
             'department',
             'stafftype',
         ]);
-
-        // tìm kiếm keyword
         if (!empty($keyword)) {
             $query->where(function ($q) use ($keyword) {
                 $q->where('fullname', 'like', "%$keyword%")
@@ -109,7 +108,43 @@ class StaffController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            "fullname"=>"required",
+            "phone"=>"required",
+            "email"=>"required",
+            "departmentid"=>"required",
+        ],[
+            "fullname.required"=>"Tên không được để trống",
+            "phone.required"=>"Số điện thoại không được để trống",
+
+            "email.required"=>"Email không được để trống",
+
+            "departmentid.required"=>"Mã khoa không được để trống",
+        ]);
+        $doctor = Staff::find($id); 
+        $data=$request->only([
+        "fullname" ,
+        "avartar",
+        "specialization" ,
+        "phone" ,
+        "email" ,
+        "departmentid" ,
+        "trainingexperience",
+        "strengthexperience"]);
+        try{
+            $newdoctor=$doctor->update($data);
+            return response()->json([
+                "status"=>true,
+                "data"=> $newdoctor,
+                "message"=>"Cập nhật bác sĩ thành công"
+            ],201);
+        }catch (Exception $e){
+            return response()->json([
+                "status"=>false,
+                "data"=> [],
+                "message"=>"Cập nhật bác sĩ không thành công"
+            ],500);
+        };
     }
 
     /**

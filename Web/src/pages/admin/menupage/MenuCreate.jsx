@@ -36,7 +36,7 @@ export default function MenuCreate() {
             setLoadingpost(false);
             console.log(">>> check message: ", response)
             toast.success(response.message);
-            navigate("/admin/Menu");
+            navigate("/his/Menu");
         } catch (error) {
             setLoadingpost(false);
             console.log(">>> check error: ", error)
@@ -56,7 +56,7 @@ export default function MenuCreate() {
     return (
         <>
             <div className="d-flex mb-1">
-                <Link to="/Admin/Menu" className="btn btn-primary me-2"><i className="fa-solid fa-left-long"></i></Link>
+                <Link to="/his/Menu" className="btn btn-primary me-2"><i className="fa-solid fa-left-long"></i></Link>
                 <h3 className="m-0">Thêm mới menu</h3>
                 <div className="d-flex flex ms-auto">
                     <button type="button" className="btn btn-primary ms-auto fs-5" disabled={loadingpost} onClick={postMenu}> {loadingpost ? (<i className="fa-solid fa-spinner fa-spin"></i>) : ("Thêm")}</button>

@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import UserService from "@/services/UserService";
 import { Redirect, router } from "expo-router";
-import { Text, View } from "react-native";
+import { Alert, Linking, Text, View } from "react-native";
 
 import * as Notifications from "expo-notifications";
 import UserDeviceService from "@/services/UserDeviceService";
@@ -32,7 +32,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const setReturnUrl = useAuthStore((s) => s.setReturnUrl);
 
   async function registerForPush() {
-    const { status: existingStatus } = await Notifications.requestPermissionsAsync();
+    const { status: existingStatus } = await Notifications.getPermissionsAsync();
     let finalStatus = existingStatus;
 
     if (existingStatus !== 'granted') {
@@ -41,7 +41,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
 
     if (finalStatus !== 'granted') {
-      alert('Bạn chưa cấp quyền thông báo!');
+      Alert.alert(
+        'Không có quyền thông báo',
+        'Bạn cần bật quyền thông báo trong cài đặt để sử dụng tính năng này.',
+        [
+          { text: 'Huỷ', style: 'cancel' },
+          {
+            text: 'Mở cài đặt',
+            onPress: () => Linking.openSettings(),
+          },
+        ]
+      );
       return null;
     }
 
@@ -122,14 +132,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const logout = async () => {
     if (user) {
-      try {
+      const pushToken = await registerForPush();
 
+      if (pushToken) {
         const response = await UserDeviceService.saveUserDevice({
           deviceid: Device.modelName,
-          isactive: 0
+          devicename: Device.modelName,
+          platform: Device.osName,
+          pushtoken: pushToken,
+          isactive: 1
         })
-      } catch (err) {
-        console.log("Push token error:", err);
       }
     }
     setIsLoggedIn(false);

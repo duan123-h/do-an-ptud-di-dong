@@ -56,7 +56,6 @@ export default function UpdateProfileScreen() {
         ethnicid: "",
     });
 
-    // ================= INIT USER =================
     useEffect(() => {
         if (user) {
             setForm({

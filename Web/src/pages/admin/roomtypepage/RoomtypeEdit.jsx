@@ -43,7 +43,7 @@ export default function RoomtypeEdit() {
             const response = await Roomtype.update(roomtypeData,id);
             setLoadingpost(false);
             toast.success(response.message);
-            navigate("/admin/Roomtype");
+            navigate("/his/Roomtype");
         } catch (error) {
             setLoadingpost(false);
             if (error.response && error.response.data && error.response.data.errors) {
@@ -62,7 +62,7 @@ export default function RoomtypeEdit() {
     return (
         <>
         <div className="d-flex mb-1">
-                <Link to="/Admin/Roomtype" className="btn btn-primary me-2"><i className="fa-solid fa-left-long"></i></Link>
+                <Link to="/his/Roomtype" className="btn btn-primary me-2"><i className="fa-solid fa-left-long"></i></Link>
                 <h3 class="m-0">Chỉnh sửa hạng phòng</h3>
                 <div className="d-flex flex ms-auto">
                     <button type="button" className="btn btn-primary ms-auto fs-5" disabled={loadingpost} onClick={updateRoomtype}> {loadingpost?(<i className="fa-solid fa-spinner fa-spin"></i>):("Cập nhật")}</button>

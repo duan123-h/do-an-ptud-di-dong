@@ -148,9 +148,7 @@ export default function sidebar() {
                 </li>
               </ul>
             </li>
-            <li className="nav-item">
-              <Link className="nav-link collapsed" to="/His/warehouse"><i className="fa-solid fa-bars me-2 fs-5"></i>Quản lý kho dược</Link>
-            </li>
+
             <li className="nav-item">
               <button className="accordion-button collapsed nav-link " type="button" data-bs-toggle="collapse" data-bs-target="#collapseElleven" aria-expanded="false">
                 <i className="fa-solid fa-swatchbook me-2"></i> Quản lý bác sĩ
@@ -164,21 +162,19 @@ export default function sidebar() {
                 </li>
               </ul>
             </li>
-            <li className="nav-item">
+            {/* <li className="nav-item">
               <Link className="nav-link collapsed" to="/His/contact"><i className="fa-solid fa-bars me-2 fs-5"></i>Quản lý liên hệ</Link>
-            </li>
-            <li className="nav-item">
-              <Link className="nav-link collapsed" to="/His/Ai/UpdateData"><i className="fa-solid fa-bars me-2 fs-5"></i>Cập nhật dữ liệu chatbot</Link>
-            </li>
+            </li> */}
+
           </>
         )}
         {(role === "Admin" || role === "Doctor") && (
           <>
             <li class="nav-item">
-              <button class="accordion-button collapsed nav-link " type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false">
-                <i class="fa-solid fa-bars me-2 fs-5"></i> Ngoại trú
+              <button class="accordion-button collapsed nav-link " type="button" data-bs-toggle="collapse" data-bs-target="#collapse20" aria-expanded="false">
+                <i class="fa-solid fa-bars me-2 fs-5"></i> Quản lý ngoại trú
               </button>
-              <ul id="collapseOne" class="nav-item accordion-collapse collapse" data-bs-parent="#accordionExample">
+              <ul id="collapse20" class="nav-item accordion-collapse collapse" data-bs-parent="#accordionExample">
                 <li class="nav-item">
                   <Link class="ps-0 nav-link collapsed" to="/His/Reception"><i class="me-2"></i>Tiếp nhận bệnh nhận</Link>
                 </li>
@@ -188,11 +184,11 @@ export default function sidebar() {
               </ul>
             </li>
 
-            <li class="nav-link">
-              <button class="accordion-button collapsed nav-link " type="button" data-bs-toggle="collapse" data-bs-target="#collapse10" aria-expanded="false">
-                <i class="me-2"></i>Quản lý cận lâm sàng
+            <li class="nav-item">
+              <button class="accordion-button collapsed nav-link " type="button" data-bs-toggle="collapse" data-bs-target="#collapse21" aria-expanded="false">
+                <i class="fa-solid fa-bars me-2 fs-5"></i> Quản lý cận lâm sàng
               </button>
-              <ul id="collapse10" class="nav-item accordion-collapse collapse" data-bs-parent="#accordionExample">
+              <ul id="collapse21" class="nav-item accordion-collapse collapse" data-bs-parent="#accordionExample">
                 <li class="nav-item">
                   <Link class="ps-0 nav-link collapsed" to="/his/clsxnrequest/"><i class="me-2"></i>Xét nghiệm</Link>
                 </li>
@@ -203,6 +199,40 @@ export default function sidebar() {
             </li>
           </>
         )}
+        {(role === "Admin") && (
+          <li className="nav-item">
+            <Link className="nav-link collapsed" to="/His/warehouse"><i className="fa-solid fa-bars me-2 fs-5"></i>Quản lý kho dược</Link>
+          </li>
+        )}
+
+        {(role === "Admin" || role === "WarehouseManager") && (
+          <>
+            <li class="p-3 py-1">
+              <Link class="ps-0 nav-link collapsed" to="/his/inventory/"><i class="fa-solid fa-bars me-2 fs-5"></i>Quản lý tồn kho</Link>
+            </li>
+            <li class="p-3 py-1">
+              <Link class="ps-0 nav-link collapsed" to="/his/importreceipt/"><i class="fa-solid fa-bars me-2 fs-5"></i>Quản lý nhập kho</Link>
+            </li>
+            <li class="nav-item">
+              <button class="accordion-button collapsed nav-link " type="button" data-bs-toggle="collapse" data-bs-target="#collapse30" aria-expanded="false">
+                <i class="fa-solid fa-bars me-2 fs-5"></i> Quản lý xuất kho dược
+              </button>
+              <ul id="collapse30" class="nav-item accordion-collapse collapse" data-bs-parent="#accordionExample">
+                <li class="nav-item">
+                  <Link class="ps-0 nav-link collapsed" to="/his/exportprescription"><i class="me-2"></i>Xuất theo đơn thuốc</Link>
+                </li>
+              </ul>
+            </li>
+          </>
+        )}
+        {
+          role == "Admin" && (
+            <li className="nav-item">
+              <Link className="nav-link collapsed" to="/His/Ai/UpdateData"><i className="fa-solid fa-bars me-2 fs-5"></i>Cập nhật dữ liệu chatbot</Link>
+            </li>
+          )
+        }
+
       </ul>
     </aside>
   );

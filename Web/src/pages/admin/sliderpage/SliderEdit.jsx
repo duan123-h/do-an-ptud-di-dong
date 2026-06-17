@@ -56,7 +56,7 @@ export default function SliderEdit() {
             setLoadingpost(false);
 
             toast.success(response.message);
-            navigate("/admin/slider");
+            navigate("/his/slider");
 
         } catch (error) {
             setLoadingpost(false);
@@ -76,7 +76,7 @@ export default function SliderEdit() {
     return (
         <>
             <div className="d-flex mb-1">
-                <Link to="/admin/slider" className="btn btn-primary me-2">
+                <Link to="/his/slider" className="btn btn-primary me-2">
                     <i className="fa-solid fa-left-long"></i>
                 </Link>
                 <h3 className="m-0">Chỉnh sửa Slider</h3>

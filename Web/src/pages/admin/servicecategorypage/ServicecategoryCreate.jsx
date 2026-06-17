@@ -45,7 +45,7 @@ export default function ServicecategoryCreate() {
             setLoadingpost(false);
             console.log(">>> check message: ",response)
             toast.success(response.message);
-            navigate("/admin/Servicecategory");
+            navigate("/his/Servicecategory");
         } catch (error) {
             setLoadingpost(false);
             console.log(">>> check error: ",error)
@@ -65,7 +65,7 @@ export default function ServicecategoryCreate() {
     return (
         <>
         <div className="d-flex mb-1">
-                <Link to="/Admin/Servicecategory" className="btn btn-primary me-2"><i className="fa-solid fa-left-long"></i></Link>
+                <Link to="/his/Servicecategory" className="btn btn-primary me-2"><i className="fa-solid fa-left-long"></i></Link>
                 <h3 class="m-0">Thêm mới loại dịch vụị </h3>
                 <div className="d-flex flex ms-auto">
                     <button type="button" className="btn btn-primary ms-auto fs-5" disabled={loadingpost} onClick={postServicecategory}> {loadingpost?(<i className="fa-solid fa-spinner fa-spin"></i>):("Thêm")}</button>

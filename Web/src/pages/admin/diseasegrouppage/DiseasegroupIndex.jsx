@@ -58,9 +58,9 @@ export default function DiseasegroupIndex() {
                             <input name="search" type="text" className="form-control border-dark me-2" style={{ Width: '250px' }}
                                 id="exampleFormControlInput1" placeholder="name@example.com" />
                             <button className="btn btn-primary" type="submit"><i className="fa-solid fa-search"></i></button>
-                            <Link to="/admin/Diseasegroup" className="btn btn-primary ms-2"><i className="fa-solid fa-rotate-right"></i></Link>
+                            <Link to="/his/Diseasegroup" className="btn btn-primary ms-2"><i className="fa-solid fa-rotate-right"></i></Link>
                         </form>
-                        <Link to="/admin/Diseasegroup/create" className="btn btn-success mx-0 my-2 ms-sm-auto text-nowrap"><i className="fa-solid fa-plus me-2"></i>Thêm</Link>
+                        <Link to="/his/Diseasegroup/create" className="btn btn-success mx-0 my-2 ms-sm-auto text-nowrap"><i className="fa-solid fa-plus me-2"></i>Thêm</Link>
                     </div>
                     <div className="table-responsive">
                         <table className="table" style={{ Width: '100%' }} >
@@ -82,7 +82,7 @@ export default function DiseasegroupIndex() {
                                                     <td className="align-middle" >{item.name}</td>
                                                     <td className="align-middle"><div className=" ql-snow" ><div className="ql-editor" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(item.description) }}></div></div></td>
                                                     <td className="align-middle" style={{ minWidth: '110px', width: '110px' }}>
-                                                        <Link to={`/admin/Diseasegroup/edit/${item.diseasegroupid}`} className="btn btn-primary mx-1 px-2 py-1"><i className="fa-regular fa-edit fs-6"></i></Link>
+                                                        <Link to={`/his/Diseasegroup/edit/${item.diseasegroupid}`} className="btn btn-primary mx-1 px-2 py-1"><i className="fa-regular fa-edit fs-6"></i></Link>
                                                         <button className="btn btn-danger mx-1 px-2 py-1"><i
                                                             className="fa-regular fa-trash-can fs-6" onClick={() => handleDelete(item.diseasegroupid, item.name)}></i></button>
                                                     </td>

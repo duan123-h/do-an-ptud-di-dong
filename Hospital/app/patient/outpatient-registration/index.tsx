@@ -59,63 +59,94 @@ export default function OutpatientRegistrationListScreen() {
                     showsHorizontalScrollIndicator={false}
                     contentContainerStyle={{ paddingHorizontal: 8 }}
                 >
-                    <TouchableOpacity
-                        className={`me-3 py-2 px-6 rounded-full border ${selectedStatus.status === null
-                                ? "bg-primary-600 border-primary-600"
-                                : "bg-white border-gray-300"
-                            }`}
-                        style={
-                            selectedStatus.status === null
-                                ? { elevation: 3 }
-                                : undefined
-                        }
-                        onPress={() => setSelectedStatus({ status: null })}
-                    >
-                        <Text
-                            className={`text-base font-bold ${selectedStatus.status === null
-                                    ? "text-white"
-                                    : "text-gray-700"
-                                }`}
-                        >
-                            Tất cả
-                        </Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity
-                        className={`me-3 py-2 px-6 rounded-full border ${selectedStatus.status === 0
-                                ? "bg-primary-600 border-primary-600"
-                                : "bg-white border-gray-300"
-                            }`}
-                        style={selectedStatus.status === 0 ? { elevation: 3 } : undefined}
-                        onPress={() => setSelectedStatus({ status: 0 })}
-                    >
-                        <Text
-                            className={`text-base font-bold ${selectedStatus.status === 0
-                                    ? "text-white"
-                                    : "text-gray-700"
-                                }`}
-                        >
-                            Đang chờ khám
-                        </Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity
-                        className={`me-3 py-2 px-6 rounded-full border ${selectedStatus.status === 1
-                                ? "bg-primary-600 border-primary-600"
-                                : "bg-white border-gray-300"
-                            }`}
-                        style={selectedStatus.status === 1 ? { elevation: 3 } : undefined}
-                        onPress={() => setSelectedStatus({ status: 1 })}
-                    >
-                        <Text
-                            className={`text-base font-bold ${selectedStatus.status === 1
-                                    ? "text-white"
-                                    : "text-gray-700"
-                                }`}
-                        >
-                            Đang khám
-                        </Text>
-                    </TouchableOpacity>
+                    {
+                        selectedStatus.status === null ? (
+                            <TouchableOpacity
+                                className="me-3 py-2 px-6 rounded-full border bg-primary-600 border-primary-600"
+                                style={{ elevation: 3 }}
+                                onPress={() => setSelectedStatus({ status: null })}
+                            >
+                                <Text className="text-base font-bold text-white">
+                                    Tất cả
+                                </Text>
+                            </TouchableOpacity>
+                        ) : (
+                            <TouchableOpacity
+                                className="me-3 py-2 px-6 rounded-full border bg-white border-gray-300"
+                                onPress={() => setSelectedStatus({ status: null })}
+                            >
+                                <Text className="text-base font-bold text-gray-700">
+                                    Tất cả
+                                </Text>
+                            </TouchableOpacity>
+                        )
+                    }
+                    {
+                        selectedStatus.status === 1 ? (
+                            <TouchableOpacity
+                                className="me-3 py-2 px-6 rounded-full border bg-primary-600 border-primary-600"
+                                style={{ elevation: 3 }}
+                                onPress={() => setSelectedStatus({ status: 1 })}
+                            >
+                                <Text className="text-base font-bold text-white">
+                                    Đang chờ khám
+                                </Text>
+                            </TouchableOpacity>
+                        ) : (
+                            <TouchableOpacity
+                                className="me-3 py-2 px-6 rounded-full border bg-white border-gray-300"
+                                onPress={() => setSelectedStatus({ status: 1 })}
+                            >
+                                <Text className="text-base font-bold text-gray-700">
+                                    Đang chờ khám
+                                </Text>
+                            </TouchableOpacity>
+                        )
+                    }
+                    {
+                        selectedStatus.status === 2 ? (
+                            <TouchableOpacity
+                                className="me-3 py-2 px-6 rounded-full border bg-primary-600 border-primary-600"
+                                style={{ elevation: 3 }}
+                                onPress={() => setSelectedStatus({ status: 2 })}
+                            >
+                                <Text className="text-base font-bold text-white">
+                                    Đang khám
+                                </Text>
+                            </TouchableOpacity>
+                        ) : (
+                            <TouchableOpacity
+                                className="me-3 py-2 px-6 rounded-full border bg-white border-gray-300"
+                                onPress={() => setSelectedStatus({ status: 2 })}
+                            >
+                                <Text className="text-base font-bold text-gray-700">
+                                    Đang khám
+                                </Text>
+                            </TouchableOpacity>
+                        )
+                    }
+                    {
+                        selectedStatus.status === 3 ? (
+                            <TouchableOpacity
+                                className="me-3 py-2 px-6 rounded-full border bg-primary-600 border-primary-600"
+                                style={{ elevation: 3 }}
+                                onPress={() => setSelectedStatus({ status: 3 })}
+                            >
+                                <Text className="text-base font-bold text-white">
+                                    Đã khám
+                                </Text>
+                            </TouchableOpacity>
+                        ) : (
+                            <TouchableOpacity
+                                className="me-3 py-2 px-6 rounded-full border bg-white border-gray-300"
+                                onPress={() => setSelectedStatus({ status: 3 })}
+                            >
+                                <Text className="text-base font-bold text-gray-700">
+                                    Đã khám
+                                </Text>
+                            </TouchableOpacity>
+                        )
+                    }
                 </ScrollView>
             </View>
             <FlatList
@@ -131,19 +162,19 @@ export default function OutpatientRegistrationListScreen() {
                             pathname: "/patient/outpatient-registration/detail",
                             params: { id: item.outpatientregistrationid }
                         })} className="rounded-2xl flex-row overflow-hidden m-3 shadow-2xl">
-                            <View className="w-2 bg-amber-500"></View>
+                            <View className="w-2 bg-red-500"></View>
 
                             <View className="w-36 items-center justify-center bg-amber-100 p-4">
-                                <Text className="text-lg text-amber-900">Số thứ tự</Text>
-                                <Text className="font-bold text-4xl text-amber-800">#{item.queueorder}</Text>
+                                <Text className="text-lg text-white">Số thứ tự</Text>
+                                <Text className="font-bold text-4xl text-white">#{item.queueorder}</Text>
                             </View>
 
                             <View className="bg-white flex-1 p-4 gap-y-2">
                                 <Text className="font-bold text-xl text-gray-900">{item.patient?.fullname}</Text>
                                 <Text className="text-lg text-gray-600">{item.department?.name}</Text>
 
-                                <Text className="text-lg bg-amber-500 px-3 py-1 rounded-full text-white self-start">
-                                    Chờ khám
+                                <Text className="text-lg bg-red-500 px-3 py-1 rounded-full text-white self-start">
+                                    Huỷ khám
                                 </Text>
                             </View>
 
@@ -151,57 +182,84 @@ export default function OutpatientRegistrationListScreen() {
                                 <MaterialIcons name="navigate-next" size={40} color="#9CA3AF" />
                             </View>
                         </TouchableOpacity>
-                    ) : item.examinationstatus === 1 ? (
-                        <TouchableOpacity onPress={() => router.push({
-                            pathname: "/patient/outpatient-registration/detail",
-                            params: { id: item.outpatientregistrationid }
-                        })} className="rounded-2xl flex-row overflow-hidden m-3 shadow-2xl">
-                            <View className="w-2 bg-sky-500"></View>
+                    ) :
+                        item.examinationstatus === 1 ? (
+                            <TouchableOpacity onPress={() => router.push({
+                                pathname: "/patient/outpatient-registration/detail",
+                                params: { id: item.outpatientregistrationid }
+                            })} className="rounded-2xl flex-row overflow-hidden m-3 shadow-2xl">
+                                <View className="w-2 bg-amber-500"></View>
 
-                            <View className="w-36 items-center justify-center bg-sky-100 p-4">
-                                <Text className="text-lg text-sky-900">Số thứ tự</Text>
-                                <Text className="font-bold text-4xl text-sky-800">#{item.queueorder}</Text>
-                            </View>
+                                <View className="w-36 items-center justify-center bg-amber-100 p-4">
+                                    <Text className="text-lg text-amber-900">Số thứ tự</Text>
+                                    <Text className="font-bold text-4xl text-amber-800">#{item.queueorder}</Text>
+                                </View>
 
-                            <View className="bg-white flex-1 p-4 gap-y-2">
-                                <Text className="font-bold text-xl text-gray-900">{item.patient?.fullname}</Text>
-                                <Text className="text-lg text-gray-600">{item.department?.name}</Text>
+                                <View className="bg-white flex-1 p-4 gap-y-2">
+                                    <Text className="font-bold text-xl text-gray-900">{item.patient?.fullname}</Text>
+                                    <Text className="text-lg text-gray-600">{item.department?.name}</Text>
 
-                                <Text className="text-lg bg-sky-500 px-3 py-1 rounded-full text-white self-start">
-                                    Đang khám
-                                </Text>
-                            </View>
+                                    <Text className="text-lg bg-amber-500 px-3 py-1 rounded-full text-white self-start">
+                                        Chờ khám
+                                    </Text>
+                                </View>
 
-                            <View className="bg-white items-center justify-center">
-                                <MaterialIcons name="navigate-next" size={40} color="#9CA3AF" />
-                            </View>
-                        </TouchableOpacity>
-                    ) : (
-                        <TouchableOpacity onPress={() => router.push({
-                            pathname: "/patient/outpatient-registration/detail",
-                            params: { id: item.outpatientregistrationid }
-                        })} className="rounded-2xl flex-row overflow-hidden m-3 shadow-2xl">
-                            <View className="w-2 bg-emerald-500"></View>
+                                <View className="bg-white items-center justify-center">
+                                    <MaterialIcons name="navigate-next" size={40} color="#9CA3AF" />
+                                </View>
+                            </TouchableOpacity>
+                        )
+                            : item.examinationstatus === 2 ? (
+                                <TouchableOpacity onPress={() => router.push({
+                                    pathname: "/patient/outpatient-registration/detail",
+                                    params: { id: item.outpatientregistrationid }
+                                })} className="rounded-2xl flex-row overflow-hidden m-3 shadow-2xl">
+                                    <View className="w-2 bg-sky-500"></View>
 
-                            <View className="w-36 items-center justify-center bg-emerald-100 p-4">
-                                <Text className="text-lg text-emerald-900">Số thứ tự</Text>
-                                <Text className="font-bold text-4xl text-emerald-800">#{item.queueorder}</Text>
-                            </View>
+                                    <View className="w-36 items-center justify-center bg-sky-100 p-4">
+                                        <Text className="text-lg text-sky-900">Số thứ tự</Text>
+                                        <Text className="font-bold text-4xl text-sky-800">#{item.queueorder}</Text>
+                                    </View>
 
-                            <View className="bg-white flex-1 p-4 gap-y-2">
-                                <Text className="font-bold text-xl text-gray-900">{item.patient?.fullname}</Text>
-                                <Text className="text-lg text-gray-600">{item.department?.name}</Text>
+                                    <View className="bg-white flex-1 p-4 gap-y-2">
+                                        <Text className="font-bold text-xl text-gray-900">{item.patient?.fullname}</Text>
+                                        <Text className="text-lg text-gray-600">{item.department?.name}</Text>
 
-                                <Text className="text-lg bg-emerald-500 px-3 py-1 rounded-full text-white self-start">
-                                    Đã khám
-                                </Text>
-                            </View>
+                                        <Text className="text-lg bg-sky-500 px-3 py-1 rounded-full text-white self-start">
+                                            Đang khám
+                                        </Text>
+                                    </View>
 
-                            <View className="bg-white items-center justify-center">
-                                <MaterialIcons name="navigate-next" size={40} color="#9CA3AF" />
-                            </View>
-                        </TouchableOpacity>
-                    )
+                                    <View className="bg-white items-center justify-center">
+                                        <MaterialIcons name="navigate-next" size={40} color="#9CA3AF" />
+                                    </View>
+                                </TouchableOpacity>
+                            ) : (
+                                <TouchableOpacity onPress={() => router.push({
+                                    pathname: "/patient/outpatient-registration/detail",
+                                    params: { id: item.outpatientregistrationid }
+                                })} className="rounded-2xl flex-row overflow-hidden m-3 shadow-2xl">
+                                    <View className="w-2 bg-emerald-500"></View>
+
+                                    <View className="w-36 items-center justify-center bg-emerald-100 p-4">
+                                        <Text className="text-lg text-emerald-900">Số thứ tự</Text>
+                                        <Text className="font-bold text-4xl text-emerald-800">#{item.queueorder}</Text>
+                                    </View>
+
+                                    <View className="bg-white flex-1 p-4 gap-y-2">
+                                        <Text className="font-bold text-xl text-gray-900">{item.patient?.fullname}</Text>
+                                        <Text className="text-lg text-gray-600">{item.department?.name}</Text>
+
+                                        <Text className="text-lg bg-emerald-500 px-3 py-1 rounded-full text-white self-start">
+                                            Đã khám
+                                        </Text>
+                                    </View>
+
+                                    <View className="bg-white items-center justify-center">
+                                        <MaterialIcons name="navigate-next" size={40} color="#9CA3AF" />
+                                    </View>
+                                </TouchableOpacity>
+                            )
                 )}
             />
 

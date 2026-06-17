@@ -14,8 +14,11 @@ use App\Http\Controllers\EthnicgroupController;
 use App\Http\Controllers\ExportController;
 use App\Http\Controllers\FavoriteBlogController;
 use App\Http\Controllers\HamletController;
+use App\Http\Controllers\ImagingResultController;
 use App\Http\Controllers\ImportReceiptController;
 use App\Http\Controllers\InventoryController;
+use App\Http\Controllers\LabResulDdetailController;
+use App\Http\Controllers\LabResultDetailController;
 use App\Http\Controllers\ManufacturerController;
 use App\Http\Controllers\MedicalexaminationController;
 use App\Http\Controllers\MedicineController;
@@ -92,6 +95,7 @@ Route::middleware("CustomAuth")->get('/users/servicerequests', [ServicerequestCo
 Route::middleware("CustomAuth")->apiResource('/favoriteblogs', FavoriteBlogController::class)->only(['index',"store","destroy"]);
 
 Route::apiResource('staffs', StaffController::class)->only(['index',"show"]);
+Route::middleware("CustomAuth:Admin")->apiResource('staffs', StaffController::class)->only(['update',"store","destroy"]);
 Route::post('/login', [AuthController::class, 'login']);
 
 Route::middleware("CustomAuth")->post('/users/savedevice', [UserDeviceController::class, 'saveUserDevice']);
@@ -101,7 +105,9 @@ Route::middleware("CustomAuth")->post('/users/savedevice', [UserDeviceController
 Route::apiResource('departments', DepartmentController::class);
 Route::apiResource('blogs', BlogController::class)->only(['index','show']);
 Route::middleware("CustomAuth")->apiResource('/users/prescriptions', PrescriptionController::class)->only(['index','show']);
-Route::middleware("CustomAuth")->apiResource('/users/medicalexaminations', MedicalexaminationController::class)->only(['index','show']);
+
+Route::middleware("CustomAuth")->get('/users/medicalexaminations', [MedicalexaminationController::class, 'showByUser']);
+Route::middleware("CustomAuth")->apiResource('/users/medicalexaminations', MedicalexaminationController::class)->only(['index']);
 
 Route::middleware("CustomAuth")->get('/users/servicerequests/{id}/details', [ServicerequestController::class, 'showDetailsByUser']);
 
@@ -193,7 +199,12 @@ Route::middleware("CustomAuth:Admin|Doctor")->apiResource('/his/servicerequestde
 Route::middleware("CustomAuth:Admin|Doctor")->apiResource('/his/servicerequests', ServicerequestController::class);
 Route::middleware("CustomAuth:Admin|Doctor")->get('/his/servicerequests/{id}/details', [ServicerequestController::class, 'details']);
 Route::middleware("CustomAuth:Admin|Doctor")->get('/his/servicerequestdetails/{id}/start', [ServicerequestdetailController::class, 'start']);
-Route::middleware("CustomAuth:Admin|Doctor")->get('/his/servicerequestdetails/{id}/end', [ServicerequestdetailController::class, 'end']);
+Route::middleware("CustomAuth:Admin|Doctor")->apiResource('labresultdetails', LabResultDetailController::class);
+Route::middleware("CustomAuth:Admin|Doctor")->apiResource('imagingresults', ImagingResultController::class);
+
+Route::middleware("CustomAuth")->get('/servicerequestdetails/{id}/result', [ServicerequestdetailController::class, 'result']);
+
+Route::middleware("CustomAuth:Admin|Doctor")->get('/la/{id}/end', [ServicerequestdetailController::class, 'end']);
 
 Route::middleware("CustomAuth:Admin|WarehouseManager")->group(function () {
     Route::apiResources([

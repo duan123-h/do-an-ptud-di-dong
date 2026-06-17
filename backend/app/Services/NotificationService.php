@@ -85,10 +85,7 @@ class NotificationService
                 ->whereNotNull('pushtoken')
                 ->get();
 
-            if ($devices->isEmpty()) {
-                DB::commit();
-                return;
-            }
+            
             $userIds = (array) $data['userid'];
             $userIds = array_filter($userIds);
             foreach ($userIds as $userId) {
@@ -99,6 +96,10 @@ class NotificationService
                     'isdeleted' => 0,
                     'createdat' => now(),
                 ]);
+            }
+            if ($devices->isEmpty()) {
+                DB::commit();
+                return;
             }
 
             $expoMessages = [];

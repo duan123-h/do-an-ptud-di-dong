@@ -66,9 +66,9 @@ export default function WarehouseIndex() {
                             <input name="search" type="text" className="form-control border-dark me-2" style={{ Width: '250px' }}
                                 id="exampleFormControlInput1" placeholder="name@example.com" />
                             <button className="btn btn-primary" type="submit"><i className="fa-solid fa-search"></i></button>
-                            <Link to="/admin/Warehouse" className="btn btn-primary ms-2"><i className="fa-solid fa-rotate-right"></i></Link>
+                            <Link to="/his/Warehouse" className="btn btn-primary ms-2"><i className="fa-solid fa-rotate-right"></i></Link>
                         </form>
-                        <Link to="/admin/Warehouse/create" className="btn btn-success mx-0 my-2 ms-sm-auto text-nowrap"><i className="fa-solid fa-plus me-2"></i>Thêm</Link>
+                        <Link to="/his/Warehouse/create" className="btn btn-success mx-0 my-2 ms-sm-auto text-nowrap"><i className="fa-solid fa-plus me-2"></i>Thêm</Link>
                     </div>
                     <div className="table-responsive">
                         <table className="table" style={{ Width: '100%' }} >
@@ -98,7 +98,7 @@ export default function WarehouseIndex() {
                                                     <td className="align-middle">{new Date(item.createdat).toLocaleDateString('vi-VN')}</td>
                                                     <td className="align-middle">{new Date(item.updatedat).toLocaleDateString('vi-VN')}</td>
                                                     <td className="align-middle">{item.usermanagers?.map(item=>{
-                                                        return (<span class="badge bg-secondary mx-2 my-2">[{item.userid}]-{item.name}</span>);
+                                                        return (<span class="badge bg-secondary mx-2 my-2">[{item.userid}]-{item?.fullname}</span>);
                                                     })}</td>
                                                     <td class="align-middle">
                                                         <div className={`fs-7 my-1 p-2  badge ${item.isactive ? ` bg-success` : ` text-dark badge bg-warning`}`}>{item.isactive ? "Hoạt động" : `Ngừng hoạt động`}</div>
@@ -106,7 +106,7 @@ export default function WarehouseIndex() {
                                                     <td className="align-middle" style={{ minWidth: '170px', width: '170px' }}>
                                                         <button onClick={() => handleIsactive(item.warehouseid)} className={`btn ${item.isactive ? ` btn-warning ` : ` btn-success `}mx-1 px-2 py-1`}><i
                                                             className={`fa-regular  ${item.isactive ? ` fa-eye-slash ` : ` fa-eye `} fs-6`}></i></button>
-                                                        <Link to={`/admin/Warehouse/edit/${item.warehouseid}`} className="btn btn-primary mx-1 px-2 py-1"><i className="fa-regular fa-edit fs-6"></i></Link>
+                                                        <Link to={`/his/Warehouse/edit/${item.warehouseid}`} className="btn btn-primary mx-1 px-2 py-1"><i className="fa-regular fa-edit fs-6"></i></Link>
                                                         <button className="btn btn-danger mx-1 px-2 py-1"><i
                                                             className="fa-regular fa-trash-can fs-6" onClick={() => handleDelete(item.warehouseid, item.name)}></i></button>
                                                     </td>

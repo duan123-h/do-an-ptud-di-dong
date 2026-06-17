@@ -39,6 +39,7 @@ export default function NotificationScreen() {
 
 
         <SafeAreaView className="flex-1 bg-white">
+            <LoadingOverlay isLoading={loading}></LoadingOverlay>
             <View className="bg-orange-50 flex-row items-center px-6 py-4 border-b border-gray-200">
                 <Text className="text-black font-bold text-xl">
                     Thông báo

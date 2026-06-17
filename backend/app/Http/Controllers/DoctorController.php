@@ -130,7 +130,7 @@ class DoctorController extends Controller
      */
     public function update(Request $request, string $id)
     {
-         $request->validate([
+        $request->validate([
             "fullname"=>"required",
             "phone"=>"required|unique:tbldoctor,phone,{$id},doctorid",
             "email"=>"required|unique:tbldoctor,email,{$id},doctorid",

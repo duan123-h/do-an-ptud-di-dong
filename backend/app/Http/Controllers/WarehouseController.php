@@ -18,17 +18,25 @@ class WarehouseController extends Controller
     {
         $limit = $request->get("limit");
         if ($limit == null) {
+            $query=Warehouse::with(["usermanagers.staffprofile"])->get();
+            $data = $query->map(function ($item) {
+                $t = $item->getAttributes();
+                if($item->usermanagers){
+                    $t["usermanagers"]=$item->usermanagers->map(function ($item1){
+                        return $item1?->staffprofile;
+                    });
+                }else{
+                    $t["usermanagers"]=[];
+                }
+                return $t;
+            });
             return response()->json([
                 "status" => true,
-                "data" => Warehouse::with(["usermanagers" => function ($q) {
-                    $q->Select('tbluser.userid');
-                }])->get(),
+                "data" =>$data,
                 "message" => "lấy dữ liệu kho thành công"
             ], 200);
         } else {
-            $data = Warehouse::with(["usermanagers" => function ($q) {
-                $q->Select('tbluser.userid');
-            }])->paginate($limit);
+            $data = Warehouse::with(["usermanagers.staffprofile"])->paginate($limit);
             return response()->json([
                 "status" => true,
                 "data" => $data->items(),
@@ -61,8 +69,8 @@ class WarehouseController extends Controller
                 'required',
                 'integer',
                 'exists:tbluser,userid',
-                function ($attribute, $value, $fail){
-                    $WarehouseManager = WarehouseManager::with('user')->where("userid",$value)->first();
+                function ($attribute, $value, $fail) {
+                    $WarehouseManager = WarehouseManager::with('user')->where("userid", $value)->first();
                     if ($WarehouseManager) {
                         $fail("Người dùng [{$WarehouseManager->user->userid}]-{$WarehouseManager->user->name} đã được phân công ở một kho khác.");
                     }
@@ -145,16 +153,14 @@ class WarehouseController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $warehouse = Warehouse::with(["usermanagers" => function ($q) {
-                $q->Select('tbluser.userid', 'tbluser.name');
-            }])->find($id);
-            if (!$warehouse) {
-                return response()->json([
-                    "status" => true,
-                    "data" => [],
-                    "message" => "Không tồn tại kho này!"
-                ], 404);
-            }
+        $warehouse = Warehouse::with(["usermanagers"])->find($id);
+        if (!$warehouse) {
+            return response()->json([
+                "status" => true,
+                "data" => [],
+                "message" => "Không tồn tại kho này!"
+            ], 404);
+        }
         $validate = $request->validate([
             'name' => "required|unique:tblwarehouse,name,{$id},warehouseid",
             'location' => 'nullable|string|max:255',
@@ -165,8 +171,8 @@ class WarehouseController extends Controller
                 'required',
                 'integer',
                 'exists:tbluser,userid',
-                function ($attribute, $value, $fail) use ($warehouse){
-                    $WarehouseManager = WarehouseManager::with('user')->where("userid",$value)->whereNot('warehouseid',$warehouse->warehouseid)->first();
+                function ($attribute, $value, $fail) use ($warehouse) {
+                    $WarehouseManager = WarehouseManager::with('user')->where("userid", $value)->whereNot('warehouseid', $warehouse->warehouseid)->first();
                     if ($WarehouseManager) {
                         $fail("Người dùng [{$WarehouseManager->user->userid}]-{$WarehouseManager->user->name} đã được phân công ở một kho khác.");
                     }

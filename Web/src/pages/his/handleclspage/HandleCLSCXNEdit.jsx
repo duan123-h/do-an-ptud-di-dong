@@ -1,5 +1,6 @@
 import toast from 'react-hot-toast';
 import Servicerequestdetail from "../../../services/his/ServicerequestdetailService";
+import LabResultDetailService from "../../../services/LabResultDetailService";
 import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import swal from "sweetalert2";
@@ -27,16 +28,20 @@ export default function HandleCLSXNEdit() {
 
             setCLSDetailData(data);
 
-            // init dynamic form
             const init = {};
-            data.service?.labparameters?.forEach(item => {
-                init[item.code] = "";
+
+            data.service?.labparameters?.forEach(param => {
+                const result = data.labresults?.find(
+                    r => r.labparameterid === param.labparameterid
+                );
+
+                init[param.code] = result?.resultvalue ?? "";
             });
 
             setLabResults(init);
 
         } catch (error) {
-            toast.error("lỗi không thể lấy chi tiết phiếu CLS.");
+            toast.error("Lỗi không thể lấy chi tiết phiếu CLS.");
         }
     }
 
@@ -60,19 +65,25 @@ export default function HandleCLSXNEdit() {
     // SAVE RESULT
     // =========================
     const handleSave = async (e) => {
-        setloadingSave(true);
         e.preventDefault();
+        setloadingSave(true);
 
         try {
+            const results = clsDetailData.service?.labparameters?.map(item => ({
+                labparameterid: item.labparameterid,
+                resultvalue: labResults[item.code] ?? null,
+                flag: null
+            }));
+
             const payload = {
-                result: labResults,
-                resultimage: clsDetailData.resultimage
+                servicerequestdetailid: id,
+                results: results
             };
 
-            const response = await Servicerequestdetail.update(payload, id);
+            const response = await LabResultDetailService.update(payload, id);
 
-            setloadingSave(false);
             toast.success(response.message);
+            setloadingSave(false);
 
         } catch (error) {
             setloadingSave(false);
@@ -152,7 +163,7 @@ export default function HandleCLSXNEdit() {
             {/* Header */}
             <div className="d-flex justify-content-between align-items-center mb-4">
                 <div>
-                    <Link className="btn btn-outline-secondary me-3" to="/his/clsrequest/">← Quay lại</Link>
+                    <Link className="btn btn-outline-secondary me-3" to="/his/clsxnrequest/">← Quay lại</Link>
                     <span className="h4 text-primary fw-bold">Chi tiết Cận lâm sàng: {clsDetailData.service?.name}</span>
                 </div>
                 <div>
