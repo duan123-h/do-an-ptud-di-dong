@@ -204,7 +204,7 @@ Route::middleware("CustomAuth:Admin|Doctor")->apiResource('imagingresults', Imag
 
 Route::get('/servicerequestdetails/{id}/result', [ServicerequestdetailController::class, 'result']);
 
-Route::middleware("CustomAuth:Admin|Doctor")->get('/la/{id}/end', [ServicerequestdetailController::class, 'end']);
+Route::middleware("CustomAuth:Admin|Doctor")->get('/his/servicerequestdetails/{id}/end', [ServicerequestdetailController::class, 'end']);
 
 Route::middleware("CustomAuth:Admin|WarehouseManager")->group(function () {
     Route::apiResources([

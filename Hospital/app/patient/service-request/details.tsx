@@ -63,7 +63,7 @@ export default function ServiceRequestDetailScreen() {
             <TouchableOpacity 
             onPress={() => router.push({
                             pathname: "/patient/service-request/result",
-                            params: { id: item.servicerequestid  }
+                            params: { id: item.servicerequestdetailid  }
                         })}
             
             className="border-b border-gray-200 py-3">
