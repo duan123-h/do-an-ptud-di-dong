@@ -115,6 +115,8 @@ Route::middleware('CustomAuth')->group(function () {
     Route::post('/notifications/{id}/read', [NotificationController::class, 'markAsRead']);
 
     Route::post('/notifications/read-all', [NotificationController::class, 'markAllAsRead']);
+
+    Route::get('/notifications/countnotread', [NotificationController::class, 'getCountNotReadByUser']);
 });
 
 

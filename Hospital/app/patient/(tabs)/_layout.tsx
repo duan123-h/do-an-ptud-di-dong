@@ -1,14 +1,17 @@
-import { Tabs } from 'expo-router';
+import { Stack, Tabs } from 'expo-router';
 import React from 'react';
 
 import { HapticTab } from '@/components/haptic-tab';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 import Entypo from '@expo/vector-icons/Entypo';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+import { useAuth } from '@/contexts/auth-context';
 export default function TabLayout() {
+  const {count} = useAuth();
   const colorScheme = useColorScheme();
 
   return (
+    <>
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: "#15803d",
@@ -37,11 +40,13 @@ export default function TabLayout() {
         name="notification"
         options={{
           title: 'Thông báo',
-          tabBarIcon: ({ color }) => <MaterialCommunityIcons
+          tabBarIcon: ({ color }) =>( <MaterialCommunityIcons
             name="bell-outline"
             size={28}
             color={color}
-          />,
+            
+          />),
+          tabBarBadge: count > 0 ? count : undefined,
         }}
       />
       <Tabs.Screen
@@ -53,5 +58,6 @@ export default function TabLayout() {
       />
 
     </Tabs>
+    </>
   );
 }

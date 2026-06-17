@@ -6,7 +6,8 @@ import { Redirect, Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import 'react-native-reanimated';
 import { RouteGuard } from '@/components/RouteGuard';
-
+import { useEffect } from 'react';
+import * as Notifications from 'expo-notifications';
 
 
 export const unstable_settings = {
@@ -27,13 +28,17 @@ export default function RootPatientLayout() {
       primary: "#16a34a",
     },
   };
-  // const { isLoggedIn, loading } = useAuth();
-  // if(loading&&!isLoggedIn){
-  //   return <Redirect href="/login" />;
-  // }
-  // if (!isLoggedIn) {
-  //   return <Redirect href="/login" />;
-  // }
+const {updateCount} = useAuth();
+  useEffect(() => {
+    const subscription = Notifications.addNotificationReceivedListener(() => {
+      updateCount();
+    });
+
+    return () => subscription.remove();
+  }, []);
+  useEffect(() => {
+    updateCount();
+  }, []);
   return (
     <>
       <RouteGuard>

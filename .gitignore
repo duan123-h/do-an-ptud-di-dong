@@ -20,5 +20,10 @@ hospital-phpmysql-plus copy.sql
 hospital-phpmysql-plus.sql
 hospital-phpmysqp copy.sql
 hospital-phpmysqp.sql
+google-services.json
+hospital-phpmysql-plus - deploy.sql
+hospitalapp-deploy.sql
+
+/deploy-backend
 /backend - Copy
 /web-backup

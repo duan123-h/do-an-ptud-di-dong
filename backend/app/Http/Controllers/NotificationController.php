@@ -118,4 +118,22 @@ class NotificationController extends Controller
             'message' => 'Tất cả thông báo đã được đọc'
         ]);
     }
+
+    public function getCountNotReadByUser()
+    {
+        $userId = Auth::user()->userid;
+
+        $query = NotificationRecipient::where('userid', $userId)
+            ->where('isread', false);
+
+        $unreadCount = $query->count();
+
+        return response()->json([
+            'status' => true,
+            'data' => [
+                'count' => $unreadCount
+            ],
+            'message' => 'Lấy dữ liệu thành công'
+        ]);
+    }
 }

@@ -2,10 +2,13 @@ import { AuthProvider } from "@/contexts/auth-context";
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { Stack } from "expo-router";
 import "../global.css";
+import Toast from 'react-native-toast-message';
 
 import * as Notifications from 'expo-notifications';
 import { useEffect } from "react";
 import { Platform } from 'react-native';
+import { StatusBar } from "expo-status-bar";
+import {useAuth} from "@/contexts/auth-context"
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
     shouldShowAlert: true,
@@ -18,6 +21,7 @@ Notifications.setNotificationHandler({
 
 
 export default function RootLayout() {
+  
 
   useEffect(() => {
     // Hàm khởi tạo Channel cho Android
@@ -59,11 +63,12 @@ export default function RootLayout() {
       primary: "#16a34a",
     },
   };
-  
+
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : LightTheme}>
       <AuthProvider>
         <Stack screenOptions={{ headerShown: false }} />
+        <Toast />
       </AuthProvider>
     </ThemeProvider>
 

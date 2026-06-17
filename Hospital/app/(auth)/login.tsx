@@ -45,9 +45,6 @@ export default function Login() {
     const { loading: useAuthLoading, isLoggedIn, hasProfile, user, updateHasProfile } = useAuth();
     const { handleLogin, loading, error, isLoginSuccess } = useUserViewModel();
     const [isHidenPass, setIsHidenPass] = useState(true);
-    const [isLogin, setIsLogin] = useState(false);
-    const [isTK, setIsTK] = useState(true);
-    const sleep = (ms: any) => new Promise(resolve => setTimeout(resolve, ms));
 
 
     const [backendIp, setBackendIp] = useState<string>("");

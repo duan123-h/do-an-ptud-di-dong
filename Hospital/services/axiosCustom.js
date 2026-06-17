@@ -1,7 +1,7 @@
 import axios from "axios";
 import queryString from "query-string";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
+import { showError } from '@/components/toast';
 const axiosClient = axios.create({
     headers:{
         'content-type':"application/json",
@@ -23,7 +23,7 @@ axiosClient.interceptors.response.use((response)=>{
     }
     return response;
 },(error)=>{
-    
+    showError(error.response?.data?.message);
     throw error;
 });
 export default axiosClient;

@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
 import NotificationService from "../../services/NotificationService";
 import { transformQuillHtml } from "@/utils/function";
+import { useAuth } from "@/contexts/auth-context";
 
 
 export const useNotificationViewModel = () => {
+  const {count,updateCount} = useAuth();
   const [Notifications, setNotifications] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<any>(null);
@@ -35,6 +37,8 @@ export const useNotificationViewModel = () => {
             : notification
         )
       );
+      const c = count-1;
+      updateCount(c);
     } catch (err: any) {
       console.error(err);
       setError(err.message || "Đã có lỗi xảy ra");

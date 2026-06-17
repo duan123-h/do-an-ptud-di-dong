@@ -3,10 +3,12 @@ import UserService from "../../services/UserService";
 import AuthService from "../../services/auth/AuthService";
 import { useAuth } from "../../contexts/auth-context";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { router } from "expo-router";
+import { useRouter } from "expo-router";
 import { useAuthStore } from "@/stores/ReturnUrlSotre";
 
+
 export const useUserProfileViewModel = () => {
+  
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -38,6 +40,7 @@ export const useUserProfileViewModel = () => {
 
 
 export const useUserViewModel = () => {
+  const router = useRouter();
   const returnUrl = useAuthStore((s) => s.returnUrl);
   const setReturnUrl = useAuthStore((s) => s.setReturnUrl);
   const [loading, setLoading] = useState(false);
@@ -59,19 +62,10 @@ export const useUserViewModel = () => {
         console.log("data: ", response.data)
         await login(response.token, response.data);
         setIsLoginSuccess(true);
-        if (returnUrl) {
-            router.replace(returnUrl);
-            setReturnUrl(null);
-        } else {
-            router.replace("/");
-        }
+        const target = returnUrl || "/";
+        router.replace(target);
       }
     } catch (err) {
-      console.log("FULL ERROR:", err);
-      console.log(alert("Đăng nhập thất bại"))
-      console.error(err.response?.data?.message || "Đăng nhập thất bại");
-      console.error(err.response?.data?.message || "Đăng nhập thất bại");
-      setError(err.response?.data?.message || "Đăng nhập thất bại");
       setIsLoginSuccess(false);
     } finally {
       setLoading(false);
@@ -83,6 +77,7 @@ export const useUserViewModel = () => {
     setError("");
     try {
       await logout();
+      setReturnUrl(null);
     } catch (err) {
       console.log("FULL ERROR:", err);
       console.log(alert("Đăng xuất thất bại"))

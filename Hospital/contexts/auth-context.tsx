@@ -6,6 +6,7 @@ import { Text, View } from "react-native";
 
 import * as Notifications from "expo-notifications";
 import UserDeviceService from "@/services/UserDeviceService";
+import NotificationService from "@/services/NotificationService";
 import * as Device from "expo-device";
 import { useAuthStore } from "@/stores/ReturnUrlSotre";
 
@@ -14,10 +15,12 @@ type AuthContextType = {
   isLoggedIn: boolean;
   hasProfile: boolean;
   user: any | null;
+  count: any | null;
   loading: boolean;
   login: (token: string, userData: any) => void;
   logout: () => void;
   updateUser: (userData: any) => void;
+  updateCount: (count: number | null) => void;
   updateHasProfile: (Data: boolean) => void;
 };
 
@@ -52,9 +55,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [hasProfile, setHasProfile] = useState(false);
   const [user, setUser] = useState<any | null>(null);
   const [loading, setLoading] = useState(true);
+  const [count, setCount] = useState<any | null>(null);
 
   useEffect(() => {
     const checkAuth = async () => {
+      console.log("vao")
       try {
         const token = await AsyncStorage.getItem("access_token");
         const savedUser = await AsyncStorage.getItem("user_info");
@@ -90,7 +95,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     };
     checkAuth();
   }, []);
-
   const login = async (token: string, userData: any) => {
     await AsyncStorage.setItem("access_token", token);
     await AsyncStorage.setItem("user_info", JSON.stringify(userData));
@@ -130,6 +134,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
     setIsLoggedIn(false);
     setHasProfile(false);
+    setUser(null);
     await AsyncStorage.removeItem("access_token");
     await AsyncStorage.removeItem("user_info");
 
@@ -140,14 +145,30 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setUser(userData);
     setHasProfile(true);
   };
+  const updateCount = async (c: Number | null) => {
+    console.log("gọi lấy thông báo chưa đọc");
+    try {
+      if (c) {
+        setCount(count - 1);
+      } else {
+        const res = await NotificationService.getCountNotRead();
+        setCount(res.data?.count || 0);
+      }
+
+
+    } catch (err) {
+      console.log("Loi:", err);
+    }
+
+  };
   const updateHasProfile = async (Data: boolean) => {
     setHasProfile(Data);
   };
 
-  // if (loading) return <View className="w-full h-full items-center justify-center"><Text>Test</Text></View>;
+  // if (loading) return <View className="w-full h-full items-center justify-center"><Text>Count</Text></View>;
 
   return (
-    <AuthContext.Provider value={{ loading, isLoggedIn, hasProfile, user, login, logout, updateUser, updateHasProfile }}>
+    <AuthContext.Provider value={{ loading, isLoggedIn, hasProfile, count, user, updateCount, login, logout, updateUser, updateHasProfile }}>
       {children}
     </AuthContext.Provider>
   );
