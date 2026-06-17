@@ -84,7 +84,7 @@ class Servicerequestdetail extends Model
     public function imagingresult()
     {
         return $this->hasOne(
-            Imagingresult::class,
+            ImagingResult::class,
             "servicerequestdetailid",
             "servicerequestdetailid"
         );
