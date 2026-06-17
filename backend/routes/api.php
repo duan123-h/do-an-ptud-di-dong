@@ -202,7 +202,7 @@ Route::middleware("CustomAuth:Admin|Doctor")->get('/his/servicerequestdetails/{i
 Route::middleware("CustomAuth:Admin|Doctor")->apiResource('labresultdetails', LabResultDetailController::class);
 Route::middleware("CustomAuth:Admin|Doctor")->apiResource('imagingresults', ImagingResultController::class);
 
-Route::middleware("CustomAuth")->get('/servicerequestdetails/{id}/result', [ServicerequestdetailController::class, 'result']);
+Route::get('/servicerequestdetails/{id}/result', [ServicerequestdetailController::class, 'result']);
 
 Route::middleware("CustomAuth:Admin|Doctor")->get('/la/{id}/end', [ServicerequestdetailController::class, 'end']);
 
