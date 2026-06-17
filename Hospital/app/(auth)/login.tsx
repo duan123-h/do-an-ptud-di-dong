@@ -61,6 +61,20 @@ export default function Login() {
     async function saveIP(ip: string) {
         await AsyncStorage.setItem("BackendIp", ip);
     }
+    const [backendIpChatot, setBackendIpChatot] = useState<string>("");
+
+    useEffect(() => {
+        const setIPChatbot = async () => {
+            const BackendIpChatot = await AsyncStorage.getItem("BackendIpChatot");
+            if (BackendIpChatot != null) {
+                setBackendIpChatot(backendIpChatot)
+            }
+        };
+        setIPChatbot();
+    }, []);
+    async function saveIPChatbot(ip: string) {
+        await AsyncStorage.setItem("BackendIpChatot", ip);
+    }
 
     return (
         <SafeAreaView className="p-6 flex-1">
@@ -78,6 +92,24 @@ export default function Login() {
             </View>
             <TouchableOpacity
                 onPress={() => saveIP(backendIp)}
+                className="mt-3 bg-primary-700 py-3 rounded-xl items-center"
+            >
+                <Text className="text-white font-bold">Lưu IP</Text>
+            </TouchableOpacity>
+            <Text>Backend IP CHATBOT</Text>
+            <View className="border rounded-lg border-gray-300">
+                <TextInput
+                    value={backendIpChatot}
+                    onChangeText={setBackendIpChatot}
+                    className="ps-10 py-5"
+                    placeholder="VD: 192.168.1.10:3000"
+                />
+                <View className="h-full items-center justify-center w-10 absolute left-0">
+                    <Ionicons name="server-outline" size={20} className="text-gray-500" />
+                </View>
+            </View>
+            <TouchableOpacity
+                onPress={() => saveIPChatbot(backendIpChatot)}
                 className="mt-3 bg-primary-700 py-3 rounded-xl items-center"
             >
                 <Text className="text-white font-bold">Lưu IP</Text>

@@ -37,7 +37,7 @@ class LabResultDetail extends Model
     public function labparameter()
     {
         return $this->belongsTo(
-            Labparameter::class,
+            LabParameter::class,
             "labparameterid",
             "labparameterid"
         );

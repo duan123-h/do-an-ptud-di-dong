@@ -14,6 +14,7 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import Markdown from "react-native-markdown-display";
 import { router } from "expo-router";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 type Message = {
   id: string;
   role: "user" | "assistant";
@@ -70,8 +71,9 @@ export default function ChatScreen() {
       const formData = new FormData();
       formData.append("token", "demo-token-1234");
       formData.append("question", userMessage.content);
+      const BackendIpChatot = await AsyncStorage.getItem("BackendIpChatot");
 
-      const res = await fetch("http://192.168.0.7:3500/api/ai", {
+      const res = await fetch(`http://${BackendIpChatot}/api/ai`, {
         method: "POST",
         body: formData,
       });
@@ -123,8 +125,8 @@ export default function ChatScreen() {
         <View className="max-w-[75%]">
           <View
             className={`px-3 py-2 rounded-2xl border ${isUser
-                ? "bg-[#038555] border-transparent"
-                : "bg-white border-gray-200"
+              ? "bg-[#038555] border-transparent"
+              : "bg-white border-gray-200"
               }`}
           >
             {isUser ? (
