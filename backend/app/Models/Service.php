@@ -36,7 +36,7 @@ class Service extends Model
     public function labparameters()
     {
         return $this->belongsToMany(
-            Labparameter::class,
+            LabParameter::class,
             "tblservicelabparameter",
             "serviceid",
             "labparameterid"
